@@ -1,0 +1,96 @@
+@use 'styles/variables' as *;
+@use 'styles/pirate-theme' as *;
+
+.playground {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $section-padding;
+
+  h2 {
+    @include section-heading;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  min-height: 600px;
+
+  @media (max-width: $breakpoint-lg) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editor-panel {
+  @include panel;
+  overflow: hidden;
+  min-height: 500px;
+  position: relative;
+
+  &::before {
+    content: 'Editor';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(180deg, $surface-secondary 0%, transparent 100%);
+    color: $text-muted;
+    font-size: 0.75rem;
+    font-family: $font-body;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.output-panel {
+  display: flex;
+  flex-direction: column;
+  @include panel;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  background: $surface-secondary;
+  border-bottom: 1px solid $border-light;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: $text-muted;
+  padding: 0.85rem 1rem;
+  font-family: $font-body;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+
+  &:hover {
+    color: $text-primary;
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  &.active {
+    color: $gold;
+    border-bottom-color: $gold;
+    background: rgba($gold, 0.03);
+  }
+
+  & + & {
+    border-left: 1px solid $border-light;
+  }
+}
+
+.tab-content {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+}

@@ -1,0 +1,41 @@
+<section class="playground" id="playground">
+  <h2>The Playground</h2>
+
+  <div class="workspace">
+    <div class="editor-panel">
+      <app-editor [initialCode]="currentCode()" (codeChange)="onCodeChange($event)" />
+    </div>
+
+    <div class="output-panel">
+      <div class="tabs">
+        <button
+          class="tab"
+          [class.active]="activeTab() === 'simulator'"
+          (click)="activeTab.set('simulator')"
+        >
+          💥 Fire the Cannons
+        </button>
+        <button class="tab" [class.active]="activeTab() === 'map'" (click)="activeTab.set('map')">
+          🗺 The Map
+        </button>
+        <button class="tab" [class.active]="activeTab() === 'sail'" (click)="activeTab.set('sail')">
+          ⛵ Set Sail
+        </button>
+      </div>
+
+      <div class="tab-content">
+        @switch (activeTab()) {
+          @case ('simulator') {
+            <app-event-simulator [code]="currentCode()" />
+          }
+          @case ('map') {
+            <app-settings-preview [code]="currentCode()" />
+          }
+          @case ('sail') {
+            <app-getting-started [code]="currentCode()" />
+          }
+        }
+      </div>
+    </div>
+  </div>
+</section>

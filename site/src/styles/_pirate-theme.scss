@@ -1,0 +1,72 @@
+@use 'variables' as *;
+
+@mixin card {
+  background: #ffffff;
+  border: 1px solid $border-light;
+  border-radius: $card-radius;
+  padding: $card-padding;
+  box-shadow: $shadow-sm;
+}
+
+@mixin gold-button {
+  background: linear-gradient(135deg, $gold 0%, $copper 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-family: $font-body;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: $shadow-gold;
+
+  &:hover {
+    background: linear-gradient(135deg, $gold-light 0%, $gold 100%);
+    box-shadow: 0 4px 12px rgba($gold, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background: darken($gold, 5%);
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba($gold, 0.2);
+  }
+}
+
+@mixin panel {
+  background: #ffffff;
+  border: 1px solid $border-light;
+  border-radius: $card-radius;
+  box-shadow: $shadow-md;
+}
+
+@mixin code-block {
+  font-family: $font-code;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  background: $surface-dark;
+  border: 1px solid $surface-dark-hover;
+  border-radius: 8px;
+  padding: 1.25rem;
+  color: $text-on-dark;
+  overflow-x: auto;
+}
+
+@mixin section-heading {
+  font-family: $font-pirate;
+  font-size: 2.25rem;
+  color: $text-primary;
+  margin-bottom: 0.75rem;
+}
+
+.result-allow {
+  color: $sea-green;
+}
+
+.result-deny {
+  color: $blood-red;
+}
+
+.result-context {
+  color: $gold;
+}

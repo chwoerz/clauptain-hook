@@ -1,0 +1,102 @@
+@use 'styles/variables' as *;
+@use 'styles/pirate-theme' as *;
+
+.getting-started {
+  padding: 0.5rem;
+
+  h4 {
+    color: $text-muted;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba($gold, 0.12);
+  color: $copper;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+
+  p {
+    margin-bottom: 0.5rem;
+    color: $text-primary;
+  }
+}
+
+.command-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  @include code-block;
+  padding: 0.5rem 0.75rem;
+
+  code {
+    background: none;
+    padding: 0;
+    color: $sea-green;
+  }
+
+  button {
+    background: none;
+    border: 1px solid $surface-dark-hover;
+    color: $text-on-dark-muted;
+    cursor: pointer;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.875rem;
+
+    &:hover {
+      color: $gold;
+      border-color: $gold;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid rgba($gold, 0.4);
+  color: $gold;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: $font-body;
+  font-size: 0.875rem;
+
+  &:hover {
+    border-color: $gold;
+    background: rgba($gold, 0.05);
+  }
+}
+
+.note {
+  color: $text-muted;
+  font-size: 0.875rem;
+  border-top: 1px solid $border-light;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}

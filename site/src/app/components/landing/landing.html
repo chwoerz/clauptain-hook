@@ -1,0 +1,114 @@
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Clauptain <span class="hero-title-accent">Hook</span>
+    </h1>
+    <p class="hero-tagline">Type-safe hooks for Claude Code. All 29 events. Full autocomplete. One build command.</p>
+    <div class="stat-pills">
+      <span class="stat-pill">29 hook events</span>
+      <span class="stat-pill">9 typed tool inputs</span>
+      <span class="stat-pill">1 command to build</span>
+    </div>
+    <div class="hero-actions">
+      <div class="install-command">
+        <code>npm install clauptain-hook</code>
+        <button class="copy-btn" (click)="copyInstall()">
+          {{ copied() ? '✓ Copied' : '⧉ Copy' }}
+        </button>
+      </div>
+      <a href="#playground" class="cta-button">Try the Playground ↓</a>
+    </div>
+
+  </div>
+  <div class="waves" aria-hidden="true">
+    <svg class="wave wave-1" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,50 C240,90 480,10 720,50 C960,90 1200,10 1440,50 L1440,100 L0,100 Z"/>
+    </svg>
+    <svg class="wave wave-2" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,60 C180,20 360,80 540,40 C720,0 900,80 1080,40 C1260,0 1380,60 1440,40 L1440,100 L0,100 Z"/>
+    </svg>
+    <svg class="wave wave-3" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,65 C320,95 640,35 960,65 C1120,80 1280,50 1440,60 L1440,100 L0,100 Z"/>
+    </svg>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Why clauptain-hook?</h2>
+  <p class="features-subtitle">See what changes when you stop writing hooks by hand.</p>
+
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3>Type-safe everything</h3>
+      <p>Raw hooks give you unstructured JSON piped through stdin. Typo in a field name? Silent bug. Clauptain-hook gives you real TypeScript types for every event — mistakes are caught at compile time, not production.</p>
+    </div>
+    <div class="feature-code">
+      <div class="feature-code-tabs">
+        <button class="feature-tab" [class.active]="getTab('typeSafety') === 'raw'" (click)="selectTab('typeSafety', 'raw')">Raw hooks</button>
+        <button class="feature-tab" [class.active]="getTab('typeSafety') === 'typed'" (click)="selectTab('typeSafety', 'typed')">clauptain-hook</button>
+      </div>
+      @if (getTab('typeSafety') === 'raw') {
+        <pre><code class="hljs" [innerHTML]="rawTypeSafety"></code></pre>
+      } @else {
+        <pre><code class="hljs" [innerHTML]="featureTypeSafety"></code></pre>
+      }
+    </div>
+  </div>
+
+  <div class="feature-row reverse">
+    <div class="feature-text">
+      <h3>Smart type narrowing</h3>
+      <p>Pass a tool name to the matcher and the callback receives the exact input type for that tool. <code>"Write"</code> gives you <code>file_path</code> and <code>content</code>. <code>"Bash"</code> gives you <code>command</code>. No manual narrowing.</p>
+    </div>
+    <div class="feature-code">
+      <div class="feature-code-tabs">
+        <button class="feature-tab" [class.active]="getTab('narrowing') === 'raw'" (click)="selectTab('narrowing', 'raw')">Raw hooks</button>
+        <button class="feature-tab" [class.active]="getTab('narrowing') === 'typed'" (click)="selectTab('narrowing', 'typed')">clauptain-hook</button>
+      </div>
+      @if (getTab('narrowing') === 'raw') {
+        <pre><code class="hljs" [innerHTML]="rawNarrowing"></code></pre>
+      } @else {
+        <pre><code class="hljs" [innerHTML]="featureNarrowing"></code></pre>
+      }
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-text">
+      <h3>Test without subprocesses</h3>
+      <p>No more spawning bash, piping JSON to stdin, and parsing stdout. <code>testHandler</code> runs your hook as a function call with typed inputs and structured results.</p>
+    </div>
+    <div class="feature-code">
+      <div class="feature-code-tabs">
+        <button class="feature-tab" [class.active]="getTab('testing') === 'raw'" (click)="selectTab('testing', 'raw')">Raw hooks</button>
+        <button class="feature-tab" [class.active]="getTab('testing') === 'typed'" (click)="selectTab('testing', 'typed')">clauptain-hook</button>
+      </div>
+      @if (getTab('testing') === 'raw') {
+        <pre><code class="hljs" [innerHTML]="rawTesting"></code></pre>
+      } @else {
+        <pre><code class="hljs" [innerHTML]="featureTesting"></code></pre>
+      }
+    </div>
+  </div>
+
+  <div class="feature-row reverse">
+    <div class="feature-text">
+      <h3>Zero-config settings.json</h3>
+      <p>Run <code>npx clauptain-hook</code> and your settings.json is generated from your handler files. Add a hook, rebuild — done. No hand-editing JSON, no drift between code and config.</p>
+    </div>
+    <div class="feature-code">
+      <div class="feature-code-tabs">
+        <button class="feature-tab" [class.active]="getTab('settingsGen') === 'raw'" (click)="selectTab('settingsGen', 'raw')">Raw hooks</button>
+        <button class="feature-tab" [class.active]="getTab('settingsGen') === 'typed'" (click)="selectTab('settingsGen', 'typed')">clauptain-hook</button>
+      </div>
+      @if (getTab('settingsGen') === 'raw') {
+        <pre><code class="hljs" [innerHTML]="rawSettingsGen"></code></pre>
+      } @else {
+        <pre><code class="hljs" [innerHTML]="featureSettingsGen"></code></pre>
+      }
+    </div>
+  </div>
+
+  <p class="features-note">All 29 Claude Code hook events · 9 tool input types with full autocomplete</p>
+</section>

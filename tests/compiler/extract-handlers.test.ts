@@ -1,0 +1,53 @@
+import { describe, it, expect } from "vitest";
+import { resolve } from "path";
+import { loadConfig } from "../../src/compiler/load-config.js";
+import { extractHandlers } from "../../src/compiler/extract-handlers.js";
+
+const FIXTURE_PATH = resolve(
+  import.meta.dirname,
+  "../fixtures/sample-hooks.config.ts",
+);
+
+describe("extractHandlers", () => {
+  it("extracts handler metadata from loaded config", async () => {
+    const loaded = await loadConfig(FIXTURE_PATH);
+    const handlers = extractHandlers(loaded);
+
+    expect(handlers).toHaveLength(2);
+
+    const preToolUse = handlers.find((h) => h.event === "PreToolUse");
+    const stop = handlers.find((h) => h.event === "Stop");
+
+    expect(preToolUse).toEqual({
+      event: "PreToolUse",
+      handlerIndex: 0,
+      name: "blockDangerous",
+      matcher: "Bash",
+      timeout: undefined,
+      if: undefined,
+      shell: undefined,
+      statusMessage: undefined,
+      once: undefined,
+      async: undefined,
+      asyncRewake: undefined,
+    });
+    expect(stop).toEqual({
+      event: "Stop",
+      handlerIndex: 0,
+      name: "onStop",
+      matcher: undefined,
+      timeout: undefined,
+      if: undefined,
+      shell: undefined,
+      statusMessage: undefined,
+      once: undefined,
+      async: undefined,
+      asyncRewake: undefined,
+    });
+  });
+
+  it("returns empty array for empty exports", () => {
+    const handlers = extractHandlers({ handlerExports: {} });
+    expect(handlers).toEqual([]);
+  });
+});

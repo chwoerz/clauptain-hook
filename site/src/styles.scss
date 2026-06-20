@@ -1,0 +1,93 @@
+@use 'styles/variables' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pirata+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: $surface-primary;
+  color: $text-primary;
+  font-family: $font-body;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: $font-pirate;
+  color: $text-primary;
+  font-size: 3.5rem;
+  line-height: 1.1;
+}
+
+h2 {
+  font-family: $font-pirate;
+  color: $text-primary;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: $font-body;
+  color: $text-primary;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+h4 {
+  font-family: $font-body;
+  color: $text-muted;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+a {
+  color: $gold;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $copper;
+    text-decoration: underline;
+  }
+}
+
+code {
+  font-family: $font-code;
+  background: rgba($copper, 0.08);
+  color: $copper;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-size: 0.875em;
+}
+
+::selection {
+  background: rgba($gold, 0.2);
+  color: $text-primary;
+}
+
+// highlight.js overrides
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

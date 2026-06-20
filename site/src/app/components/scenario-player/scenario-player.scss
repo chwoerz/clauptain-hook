@@ -1,0 +1,19 @@
+@use 'styles/variables' as *;
+@use 'styles/pirate-theme' as *;
+
+.scenarios {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $section-padding;
+
+  h2 {
+    @include section-heading;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: $text-muted;
+    margin-bottom: 2.5rem;
+    font-size: 1.0625rem;
+  }
+}

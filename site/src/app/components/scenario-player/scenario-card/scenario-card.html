@@ -1,0 +1,42 @@
+<div class="card" [class.expanded]="expanded()">
+  <button class="card-header" (click)="toggle()">
+    <h3>{{ scenario().title }}</h3>
+    <p class="tagline">{{ scenario().tagline }}</p>
+    <span class="expand-icon">{{ expanded() ? '▾' : '▸' }}</span>
+  </button>
+
+  @if (expanded()) {
+    <div class="card-body">
+      <pre class="hook-code"><code class="hljs" [innerHTML]="highlightedHookCode()"></code></pre>
+
+      <div class="steps">
+        @for (sr of stepResults(); track sr.step.label) {
+          <div class="step" [class.ran]="sr.ran">
+            <div class="step-header">
+              <span class="step-label">{{ sr.step.label }}</span>
+              @if (sr.ran) {
+                @if (sr.decision === 'deny') {
+                  <span class="badge deny">☠ Denied</span>
+                } @else if (sr.context) {
+                  <span class="badge context">📜 Context Added</span>
+                } @else {
+                  <span class="badge allow">⚓ Allowed</span>
+                }
+              }
+            </div>
+            <p class="step-desc">{{ sr.step.description }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="card-actions">
+        <button class="run-btn" (click)="runScenario()" [disabled]="running()">
+          {{ running() ? 'Running...' : 'Run Scenario' }}
+        </button>
+        <button class="load-btn" (click)="loadInPlayground.emit(scenario().hookCode)">
+          Load in Playground
+        </button>
+      </div>
+    </div>
+  }
+</div>

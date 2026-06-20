@@ -1,0 +1,78 @@
+<div class="simulator">
+  <div class="controls">
+    <div class="control-row">
+      <label>
+        Event
+        <select [(ngModel)]="selectedEvent" (ngModelChange)="onEventChange()">
+          @for (evt of events; track evt) {
+            <option [value]="evt">{{ evt }}</option>
+          }
+        </select>
+      </label>
+
+      @if (showToolPicker()) {
+        <label>
+          Tool
+          <select [(ngModel)]="selectedTool" (ngModelChange)="onToolChange()">
+            @for (tool of tools; track tool) {
+              <option [value]="tool">{{ tool }}</option>
+            }
+          </select>
+        </label>
+      }
+    </div>
+
+    <div class="input-editor">
+      <label>Event Input (JSON)</label>
+      <textarea [(ngModel)]="inputJson" rows="10" spellcheck="false"></textarea>
+    </div>
+
+    <button class="fire-btn" (click)="fire()" [disabled]="firing()">
+      {{ firing() ? 'Firing...' : '💥 Fire the Cannons!' }}
+    </button>
+  </div>
+
+  @if (lastError()) {
+    <div class="error-box">{{ lastError() }}</div>
+  }
+
+  @if (lastResults().length > 0) {
+    <div class="results">
+      <div class="summary" [class.blocked]="lastSummary()?.blocked">
+        @if (lastSummary(); as s) {
+          @if (s.decision === 'deny') {
+            <span class="verdict deny">☠ DENIED</span>
+          } @else if (s.decision === 'allow') {
+            <span class="verdict allow">⚓ ALLOWED</span>
+          } @else if (s.additionalContext) {
+            <span class="verdict context">📜 Context Added</span>
+          } @else {
+            <span class="verdict pass">⚓ Passed (no action)</span>
+          }
+
+          @if (s.decisionReason) {
+            <p class="reason">{{ s.decisionReason }}</p>
+          }
+          @if (s.additionalContext) {
+            <p class="context-text">{{ s.additionalContext }}</p>
+          }
+        }
+      </div>
+
+      <h4>Handlers ({{ lastResults().length }})</h4>
+      @for (r of lastResults(); track r.handlerName) {
+        <div class="handler-result" [class.error]="!!r.error">
+          <div class="handler-header">
+            <span class="handler-name">{{ r.handlerName }}</span>
+            <span class="handler-time">{{ r.durationMs | number: '1.0-1' }}ms</span>
+          </div>
+          @if (r.error) {
+            <pre class="handler-error">{{ r.error }}</pre>
+          } @else {
+            <pre class="handler-output">{{ r.output | json }}</pre>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

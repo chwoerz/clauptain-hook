@@ -1,0 +1,208 @@
+@use 'styles/variables' as *;
+@use 'styles/pirate-theme' as *;
+
+.simulator {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-row {
+  display: flex;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: $text-muted;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  select {
+    background: #ffffff;
+    color: $text-primary;
+    border: 1px solid $border-medium;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-family: $font-body;
+    font-size: 0.875rem;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+
+    &:focus {
+      border-color: $gold;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($gold, 0.15);
+    }
+  }
+}
+
+.input-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  label {
+    color: $text-muted;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  textarea {
+    font-family: $font-code;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    background: $surface-dark;
+    color: $text-on-dark;
+    border: 1px solid $surface-dark-hover;
+    border-radius: 6px;
+    padding: 0.75rem;
+    resize: vertical;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+
+    &:focus {
+      border-color: $gold;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($gold, 0.15);
+    }
+  }
+}
+
+.fire-btn {
+  @include gold-button;
+  font-size: 1rem;
+  padding: 0.85rem;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+.error-box {
+  background: rgba($blood-red, 0.06);
+  border: 1px solid rgba($blood-red, 0.2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: $blood-red;
+  font-family: $font-code;
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+}
+
+.results {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.summary {
+  @include card;
+  margin-bottom: 1rem;
+
+  &.blocked {
+    border-color: rgba($blood-red, 0.3);
+    box-shadow: 0 0 12px rgba($blood-red, 0.06);
+  }
+}
+
+.verdict {
+  font-size: 1.0625rem;
+  font-weight: 700;
+
+  &.deny {
+    color: $blood-red;
+  }
+  &.allow,
+  &.pass {
+    color: $sea-green;
+  }
+  &.context {
+    color: $gold;
+  }
+}
+
+.reason {
+  margin-top: 0.5rem;
+  color: $text-muted;
+  font-style: italic;
+}
+
+.context-text {
+  margin-top: 0.5rem;
+  color: $copper;
+  font-family: $font-code;
+  font-size: 0.875rem;
+}
+
+h4 {
+  color: $text-muted;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.handler-result {
+  @include panel;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+
+  &.error {
+    border-color: rgba($blood-red, 0.3);
+  }
+}
+
+.handler-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.handler-name {
+  font-family: $font-code;
+  color: $copper;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.handler-time {
+  color: $text-faint;
+  font-size: 0.75rem;
+  font-family: $font-code;
+}
+
+.handler-output,
+.handler-error {
+  font-family: $font-code;
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.handler-output {
+  color: $text-primary;
+}
+.handler-error {
+  color: $blood-red;
+}

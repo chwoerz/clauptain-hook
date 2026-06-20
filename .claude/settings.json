@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'hi there' >> test.txt"
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              ".claude/hooks/preToolUse-protectEnvFiles.cjs"
+            ],
+            "__managed": "clauptain-hook"
+          },
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              ".claude/hooks/preToolUse-protectEnvFiles2.cjs"
+            ],
+            "__managed": "clauptain-hook"
+          }
+        ]
+      }
+    ]
+  }
+}

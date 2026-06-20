@@ -1,0 +1,47 @@
+<div class="getting-started">
+  <h4>Set Sail</h4>
+
+  <div class="step">
+    <span class="step-num">1</span>
+    <div class="step-content">
+      <p>Install clauptain-hook in your project:</p>
+      <div class="command-line">
+        <code>npm install clauptain-hook</code>
+        <button (click)="copy('npm install clauptain-hook', 'install')">
+          {{ copiedField() === 'install' ? '✓' : '⧉' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step-num">2</span>
+    <div class="step-content">
+      <p>Save your hooks config:</p>
+      <div class="actions">
+        <button class="action-btn" (click)="copyCode()">
+          {{ copiedField() === 'code' ? '✓ Copied!' : '⧉ Copy hooks.config.ts' }}
+        </button>
+        <button class="action-btn" (click)="downloadCode()">↓ Download hooks.config.ts</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step-num">3</span>
+    <div class="step-content">
+      <p>Build your hooks:</p>
+      <div class="command-line">
+        <code>npx clauptain-hook build</code>
+        <button (click)="copy('npx clauptain-hook build', 'build')">
+          {{ copiedField() === 'build' ? '✓' : '⧉' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    This compiles your TypeScript hooks to CJS and merges them into
+    <code>.claude/settings.json</code>.
+  </p>
+</div>

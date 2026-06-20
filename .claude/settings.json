@@ -2,22 +2,13 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'hi there' >> test.txt"
-          }
-        ]
-      },
-      {
         "matcher": "Write",
         "hooks": [
           {
             "type": "command",
             "command": "node",
             "args": [
-              ".claude/hooks/preToolUse-protectGeneratedFiles.cjs"
+              ".claude/hooks/clauptain-hook/preToolUse-protectGeneratedFiles.cjs"
             ],
             "__managed": "clauptain-hook"
           }

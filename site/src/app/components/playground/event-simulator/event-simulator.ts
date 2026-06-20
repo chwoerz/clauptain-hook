@@ -1,6 +1,7 @@
-import { Component, inject, input, signal, computed } from '@angular/core';
+import { Component, inject, input, signal, computed, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, JsonPipe } from '@angular/common';
+import { EditorComponent } from '../editor/editor';
 import { SandboxService } from '../../../services/sandbox.service';
 import {
   HOOK_EVENTS,
@@ -18,12 +19,14 @@ import {
 @Component({
   selector: 'app-event-simulator',
   standalone: true,
-  imports: [FormsModule, DecimalPipe, JsonPipe],
+  imports: [FormsModule, DecimalPipe, JsonPipe, EditorComponent],
   templateUrl: './event-simulator.html',
   styleUrl: './event-simulator.scss',
 })
 export class EventSimulatorComponent {
   private readonly sandbox = inject(SandboxService);
+
+  @ViewChild('jsonEditor') jsonEditor?: EditorComponent;
 
   readonly code = input.required<string>();
 
@@ -59,6 +62,7 @@ export class EventSimulatorComponent {
       this.showToolPicker() ? this.selectedTool : undefined,
     );
     this.inputJson = JSON.stringify(input, null, 2);
+    this.jsonEditor?.setCode(this.inputJson);
   }
 
   async fire(): Promise<void> {

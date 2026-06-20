@@ -1,10 +1,12 @@
 import { Component, inject, input, computed } from '@angular/core';
 import { SandboxService } from '../../../services/sandbox.service';
 import { SettingsGeneratorService } from '../../../services/settings-generator.service';
+import { EditorComponent } from '../editor/editor';
 
 @Component({
   selector: 'app-settings-preview',
   standalone: true,
+  imports: [EditorComponent],
   templateUrl: './settings-preview.html',
   styleUrl: './settings-preview.scss',
 })

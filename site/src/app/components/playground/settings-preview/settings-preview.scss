@@ -11,12 +11,11 @@
   }
 }
 
-.settings-json {
-  @include code-block;
+app-editor {
   flex: 1;
-  overflow-y: auto;
-  margin: 0;
-  color: $sea-green;
+  min-height: 300px;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .error {

@@ -36,7 +36,6 @@ var protectEnvFiles = defineHandler(
   async (input) => {
     if (input.tool_input.file_path.endsWith(".env")) {
       return {
-        reason: "Cannot modify .env files",
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
@@ -48,6 +47,6 @@ var protectEnvFiles = defineHandler(
   }
 );
 
-// .claude/hooks/.tmp-03dd5c95/protectEnvFiles.ts
+// .claude/hooks/.tmp-66b9972c/protectEnvFiles.ts
 var { run } = require(__dirname + "/runtime.cjs");
 run(protectEnvFiles.handler);

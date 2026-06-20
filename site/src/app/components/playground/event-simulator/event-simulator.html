@@ -24,7 +24,12 @@
 
     <div class="input-editor">
       <label>Event Input (JSON)</label>
-      <textarea [(ngModel)]="inputJson" rows="10" spellcheck="false"></textarea>
+      <app-editor
+        #jsonEditor
+        language="json"
+        [initialCode]="inputJson"
+        (codeChange)="inputJson = $event"
+      />
     </div>
 
     <button class="fire-btn" (click)="fire()" [disabled]="firing()">

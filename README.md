@@ -1,6 +1,6 @@
 # clauptain-hook
 
-Type-safe hooks for Claude Code. All 29 events. Full autocomplete. One build command.
+Type-safe hooks for Claude Code. All 30 events. Full autocomplete. One build command.
 
 ## The Problem
 
@@ -37,7 +37,7 @@ export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (i
 })
 ```
 
-- **Type-safe everything** — real TypeScript types for all 29 events, mistakes caught at compile time
+- **Type-safe everything** — real TypeScript types for all 30 events, mistakes caught at compile time
 - **Smart type narrowing** — pass `{ matcher: "Write" }` and get `file_path` + `content`; pass `{ matcher: "Bash" }` and get `command`
 - **Test without subprocesses** — `testHandler` runs your hook as a function call, no stdin/stdout piping
 - **Zero-config settings.json** — one command compiles your hooks and generates `settings.json`
@@ -134,13 +134,13 @@ expect(result.hookSpecificOutput?.permissionDecision).toBe("deny")
 
 Compiles hooks and merges them into the target `settings.json`.
 
-| Flag | Default | Description |
-|---|---|---|
-| `[config]` | `hooks.config.ts` | Path to the config file |
-| `-o, --output` | (required) | Path to the output `settings.json` |
-| `--hooks-dir` | `hooks/` next to target | Where to write compiled JS files |
-| `--dry-run` | `false` | Print what would be written |
-| `--clean` | `false` | Remove generated files before building |
+| Flag           | Default                 | Description                            |
+|----------------|-------------------------|----------------------------------------|
+| `[config]`     | `hooks.config.ts`       | Path to the config file                |
+| `-o, --output` | (required)              | Path to the output `settings.json`     |
+| `--hooks-dir`  | `hooks/` next to target | Where to write compiled JS files       |
+| `--dry-run`    | `false`                 | Print what would be written            |
+| `--clean`      | `false`                 | Remove generated files before building |
 
 ### `clauptain-hook validate [config]`
 
@@ -155,9 +155,8 @@ Scaffolds a starter `hooks.config.ts` and `tsconfig.json`.
 `clauptain-hook build` does four things:
 
 1. **Transpiles** your `.ts` config with esbuild and imports it
-2. **Bundles** each handler into a standalone `.cjs` file that reads JSON from stdin, calls your handler, and writes JSON to stdout
-3. **Generates** a shared `runtime.cjs` that handles the stdin/stdout protocol
-4. **Merges** hook entries into `settings.json`, preserving any hand-written hooks
+2. **Bundles** each handler into a self-contained `.cjs` file that reads JSON from stdin, calls your handler, and writes JSON to stdout
+3. **Merges** hook entries into `settings.json`, preserving any hand-written hooks
 
 Generated hook entries are marked with `"__managed": "clauptain-hook"` so they can be cleanly replaced on rebuild without touching your manual hooks.
 

@@ -7,10 +7,10 @@ import {
   rmSync,
   unlinkSync,
 } from "fs";
-import { resolve, dirname } from "path";
+import { resolve, dirname, relative } from "path";
 import { loadConfig } from "../compiler/load-config.js";
 import { extractHandlers } from "../compiler/extract-handlers.js";
-import { bundleHandlers } from "../compiler/bundle-handlers.js";
+import { bundleHandlers, type BundledFile } from "../compiler/bundle-handlers.js";
 import { mergeHooksIntoSettings } from "../compiler/merge-hooks.js";
 
 const MANAGED_SUBDIR = "clauptain-hook";
@@ -92,9 +92,24 @@ export async function build(options: BuildOptions): Promise<void> {
   mkdirSync(dirname(settingsPath), { recursive: true });
   writeFileSync(settingsPath, JSON.stringify(merged, null, 2) + "\n");
 
-  console.log(`Built ${bundledFiles.length} hook(s) → ${managedDir}`);
-  if (removedCount > 0) {
-    console.log(`Removed ${removedCount} stale hook(s)`);
+  printBuildSummary(bundledFiles, settingsPath, removedCount);
+}
+
+function printBuildSummary(
+  bundledFiles: BundledFile[],
+  settingsPath: string,
+  removedCount: number,
+): void {
+  const relSettingsPath = relative(process.cwd(), settingsPath);
+  const byEvent = Map.groupBy(bundledFiles, (f) => f.event);
+
+  console.log(`✓ Found ${bundledFiles.length} handler(s)`);
+  console.log(`✓ Generated ${relSettingsPath}`);
+  for (const [event, files] of byEvent) {
+    const names = files.map((f) => f.name).join(", ");
+    console.log(`  → ${event}: ${names}`);
   }
-  console.log(`Settings merged → ${settingsPath}`);
+  if (removedCount > 0) {
+    console.log(`✓ Removed ${removedCount} stale hook(s)`);
+  }
 }

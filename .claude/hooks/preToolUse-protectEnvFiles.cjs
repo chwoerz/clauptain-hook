@@ -36,22 +36,7 @@ var protectEnvFiles = defineHandler(
   async (input) => {
     if (input.tool_input.file_path.endsWith(".env")) {
       return {
-        hookSpecificOutput: {
-          hookEventName: "PreToolUse",
-          permissionDecision: "deny",
-          permissionDecisionReason: "Cannot modify .env files"
-        }
-      };
-    }
-    return {};
-  }
-);
-var protectEnvFiles2 = defineHandler(
-  "PreToolUse",
-  { matcher: "Read" },
-  async (input) => {
-    if (input.tool_input.file_path.endsWith(".env2")) {
-      return {
+        reason: "Cannot modify .env files",
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
@@ -63,6 +48,6 @@ var protectEnvFiles2 = defineHandler(
   }
 );
 
-// .claude/hooks/.tmp-476f606e/protectEnvFiles.ts
-var { run } = require("./runtime.cjs");
+// .claude/hooks/.tmp-03dd5c95/protectEnvFiles.ts
+var { run } = require(__dirname + "/runtime.cjs");
 run(protectEnvFiles.handler);

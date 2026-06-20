@@ -6,6 +6,7 @@ export const protectEnvFiles = defineHandler(
   async (input) => {
     if (input.tool_input.file_path.endsWith(".env")) {
       return {
+        reason: "Cannot modify .env files",
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",

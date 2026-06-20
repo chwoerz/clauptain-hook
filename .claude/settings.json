@@ -7,12 +7,17 @@
           {
             "type": "command",
             "command": "echo 'hi there' >> test.txt"
-          },
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
           {
             "type": "command",
             "command": "node",
             "args": [
-              ".claude/hooks/preToolUse-protectEnvFiles.cjs"
+              ".claude/hooks/preToolUse-protectGeneratedFiles.cjs"
             ],
             "__managed": "clauptain-hook"
           }

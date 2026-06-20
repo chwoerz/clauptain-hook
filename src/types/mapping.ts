@@ -150,15 +150,8 @@ export interface HandlerOptions {
   asyncRewake?: boolean;
 }
 
-export interface TypedHandler<E extends HookEvent> {
+export interface TypedHandler<E extends HookEvent>
+  extends Readonly<HandlerOptions> {
   readonly event: E;
-  readonly matcher?: string;
-  readonly timeout?: number;
-  readonly if?: string;
-  readonly shell?: "bash" | "powershell";
-  readonly statusMessage?: string;
-  readonly once?: boolean;
-  readonly async?: boolean;
-  readonly asyncRewake?: boolean;
   readonly handler: (input: HookInputFor<E>) => Promise<HookOutputFor<E>>;
 }

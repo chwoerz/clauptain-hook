@@ -15,6 +15,7 @@ const TMP_DIR = resolve(
 const SNAPSHOT_DIR = resolve(import.meta.dirname, "__snapshots__/generated");
 const SETTINGS_PATH = resolve(TMP_DIR, "settings.json");
 const HOOKS_DIR = resolve(TMP_DIR, "hooks");
+const MANAGED_DIR = resolve(HOOKS_DIR, "clauptain-hook");
 
 function stabilize(content: string): string {
   return content
@@ -45,7 +46,7 @@ describe("generated files", () => {
   describe("file snapshots", () => {
     it("preToolUse-blockDangerous.cjs", async () => {
       const content = readFileSync(
-        resolve(HOOKS_DIR, "preToolUse-blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
@@ -55,7 +56,7 @@ describe("generated files", () => {
 
     it("stop-onStop.cjs", async () => {
       const content = readFileSync(
-        resolve(HOOKS_DIR, "stop-onStop.cjs"),
+        resolve(MANAGED_DIR, "stop-onStop.cjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
@@ -66,7 +67,6 @@ describe("generated files", () => {
     it("settings.json", async () => {
       const content = readFileSync(SETTINGS_PATH, "utf-8");
       const settings = JSON.parse(content);
-      // Normalize paths to be platform-independent
       const normalized = JSON.parse(
         JSON.stringify(settings, (_key, value) => {
           if (typeof value === "string" && value.includes("hooks/")) {
@@ -84,18 +84,18 @@ describe("generated files", () => {
   describe("structural checks", () => {
     it("handler bundles are syntactically valid Node.js", () => {
       execSync(`node --check preToolUse-blockDangerous.cjs`, {
-        cwd: HOOKS_DIR,
+        cwd: MANAGED_DIR,
         timeout: 5000,
       });
       execSync(`node --check stop-onStop.cjs`, {
-        cwd: HOOKS_DIR,
+        cwd: MANAGED_DIR,
         timeout: 5000,
       });
     });
 
     it("handler bundles are self-contained (no runtime.cjs)", () => {
       const content = readFileSync(
-        resolve(HOOKS_DIR, "preToolUse-blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs"),
         "utf-8",
       );
       expect(content).toContain("process.stdin");
@@ -117,7 +117,7 @@ describe("generated files", () => {
 
       const result = execSync(
         `echo '${payload}' | node preToolUse-blockDangerous.cjs`,
-        { encoding: "utf-8", cwd: HOOKS_DIR },
+        { encoding: "utf-8", cwd: MANAGED_DIR },
       );
       expect(result.trim()).toBe("");
     });
@@ -133,7 +133,7 @@ describe("generated files", () => {
 
       const result = execSync(`echo '${payload}' | node stop-onStop.cjs`, {
         encoding: "utf-8",
-        cwd: HOOKS_DIR,
+        cwd: MANAGED_DIR,
       });
       expect(result.trim()).toBe("");
     });

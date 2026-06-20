@@ -5,8 +5,6 @@ import { clearUndefineds } from "../utils.js";
 export interface MergeOptions {
   existingSettings: Record<string, any>;
   bundledFiles: BundledFile[];
-  hooksDir: string;
-  settingsPath: string;
   projectRoot: string;
 }
 
@@ -33,17 +31,12 @@ function createHookCommandEntry(
   projectRoot: string,
   f: BundledFile,
 ): HookCommandEntry {
+  const { fileName, filePath, event, name, matcher, ...hookOptions } = f;
   return clearUndefineds({
     type: "command" as const,
     command: "node" as const,
-    args: [relative(projectRoot, f.filePath)],
-    timeout: f.timeout,
-    if: f.if,
-    shell: f.shell,
-    statusMessage: f.statusMessage,
-    once: f.once,
-    async: f.async,
-    asyncRewake: f.asyncRewake,
+    args: [relative(projectRoot, filePath)],
+    ...hookOptions,
     __managed: "clauptain-hook" as const,
   });
 }
@@ -97,9 +90,9 @@ function stripManagedFromExisting(
 }
 
 function mergeByMatcher(existing: any[], managed: MatcherEntry[]): any[] {
-  const existingByMatcher = new Map<string | undefined, any>();
-  for (const entry of existing) {
-    existingByMatcher.set(matcherKey(entry), entry);
+  const managedByMatcher = new Map<string | undefined, MatcherEntry>();
+  for (const entry of managed) {
+    managedByMatcher.set(matcherKey(entry), entry);
   }
 
   const seen = new Set<string | undefined>();
@@ -107,7 +100,7 @@ function mergeByMatcher(existing: any[], managed: MatcherEntry[]): any[] {
 
   for (const entry of existing) {
     const key = matcherKey(entry);
-    const managedMatch = managed.find((m) => matcherKey(m) === key);
+    const managedMatch = managedByMatcher.get(key);
     if (managedMatch) {
       result.push({
         ...entry,

@@ -1,17 +1,10 @@
+import type { HandlerOptions } from "../types/mapping.js";
 import type { LoadedConfig } from "./load-config.js";
 
-export interface HandlerEntry {
+export interface HandlerEntry extends HandlerOptions {
   event: string;
   handlerIndex: number;
   name: string;
-  matcher: string | undefined;
-  timeout: number | undefined;
-  if: string | undefined;
-  shell: "bash" | "powershell" | undefined;
-  statusMessage: string | undefined;
-  once: boolean | undefined;
-  async: boolean | undefined;
-  asyncRewake: boolean | undefined;
 }
 
 export function extractHandlers(loaded: LoadedConfig): HandlerEntry[] {
@@ -21,18 +14,9 @@ export function extractHandlers(loaded: LoadedConfig): HandlerEntry[] {
   );
 
   return [...byEvent.entries()].flatMap(([event, entries]) =>
-    entries.map(([name, handler], hi) => ({
-      event,
-      handlerIndex: hi,
-      name,
-      matcher: handler.matcher,
-      timeout: handler.timeout,
-      if: handler.if,
-      shell: handler.shell,
-      statusMessage: handler.statusMessage,
-      once: handler.once,
-      async: handler.async,
-      asyncRewake: handler.asyncRewake,
-    })),
+    entries.map(([name, handler], hi) => {
+      const { event: _event, handler: _handler, ...options } = handler;
+      return { ...options, event, handlerIndex: hi, name };
+    }),
   );
 }

@@ -9,7 +9,7 @@
             "type": "command",
             "command": "node",
             "args": [
-              "hooks/preToolUse-blockDangerous.cjs"
+              "hooks/clauptain-hook/preToolUse-blockDangerous.cjs"
             ],
             "__managed": "clauptain-hook"
           }
@@ -23,7 +23,7 @@
             "type": "command",
             "command": "node",
             "args": [
-              "hooks/stop-onStop.cjs"
+              "hooks/clauptain-hook/stop-onStop.cjs"
             ],
             "__managed": "clauptain-hook"
           }

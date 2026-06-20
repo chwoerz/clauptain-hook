@@ -1,15 +1,15 @@
 import { defineHandler } from "clauptain-hook";
 
-export const protectEnvFiles = defineHandler(
+export const protectGeneratedFiles = defineHandler(
   "PreToolUse",
-  { matcher: "Read" },
+  { matcher: "Write" },
   async (input) => {
-    if (input.tool_input.file_path.endsWith(".env")) {
+    if (input.tool_input.file_path.includes("/generated/")) {
       return {
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
-          permissionDecisionReason: "Cannot modify .env files",
+          permissionDecisionReason: "Cannot modify generated files",
         },
       };
     }

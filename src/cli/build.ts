@@ -1,9 +1,41 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from "fs";
+import {
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+  existsSync,
+  mkdirSync,
+  rmSync,
+  unlinkSync,
+} from "fs";
 import { resolve, dirname } from "path";
 import { loadConfig } from "../compiler/load-config.js";
 import { extractHandlers } from "../compiler/extract-handlers.js";
 import { bundleHandlers } from "../compiler/bundle-handlers.js";
 import { mergeHooksIntoSettings } from "../compiler/merge-hooks.js";
+
+const MANAGED_SUBDIR = "clauptain-hook";
+
+function removeStaleFiles(
+  managedDir: string,
+  bundledFiles: { fileName: string }[],
+): number {
+  if (!existsSync(managedDir)) return 0;
+
+  const generatedNames = new Set(bundledFiles.map((f) => f.fileName));
+  const staleFiles = readdirSync(managedDir, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        entry.name.endsWith(".cjs") &&
+        !generatedNames.has(entry.name),
+    );
+
+  for (const entry of staleFiles) {
+    unlinkSync(resolve(managedDir, entry.name));
+  }
+
+  return staleFiles.length;
+}
 
 export interface BuildOptions {
   config: string;
@@ -19,9 +51,10 @@ export async function build(options: BuildOptions): Promise<void> {
   const hooksDir = options.hooksDir
     ? resolve(options.hooksDir)
     : resolve(dirname(settingsPath), "hooks");
+  const managedDir = resolve(hooksDir, MANAGED_SUBDIR);
 
-  if (options.clean && existsSync(hooksDir)) {
-    rmSync(hooksDir, { recursive: true, force: true });
+  if (options.clean && existsSync(managedDir)) {
+    rmSync(managedDir, { recursive: true, force: true });
   }
 
   const loaded = await loadConfig(configPath);
@@ -35,8 +68,10 @@ export async function build(options: BuildOptions): Promise<void> {
   const bundledFiles = await bundleHandlers({
     configPath,
     handlers,
-    hooksDir,
+    hooksDir: managedDir,
   });
+
+  const removedCount = removeStaleFiles(managedDir, bundledFiles);
 
   const existingSettings: Record<string, any> = existsSync(settingsPath)
     ? JSON.parse(readFileSync(settingsPath, "utf-8"))
@@ -45,8 +80,6 @@ export async function build(options: BuildOptions): Promise<void> {
   const merged = mergeHooksIntoSettings({
     existingSettings,
     bundledFiles,
-    hooksDir,
-    settingsPath,
     projectRoot: process.cwd(),
   });
 
@@ -59,6 +92,9 @@ export async function build(options: BuildOptions): Promise<void> {
   mkdirSync(dirname(settingsPath), { recursive: true });
   writeFileSync(settingsPath, JSON.stringify(merged, null, 2) + "\n");
 
-  console.log(`Built ${bundledFiles.length} hook(s) → ${hooksDir}`);
+  console.log(`Built ${bundledFiles.length} hook(s) → ${managedDir}`);
+  if (removedCount > 0) {
+    console.log(`Removed ${removedCount} stale hook(s)`);
+  }
   console.log(`Settings merged → ${settingsPath}`);
 }

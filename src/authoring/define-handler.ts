@@ -38,15 +38,8 @@ export function defineHandler<E extends HookEvent>(
   const handler = rest[0] as (input: any) => Promise<any>;
 
   return clearUndefineds({
+    ...options,
     event,
-    matcher: options?.matcher,
-    timeout: options?.timeout,
-    if: options?.if,
-    shell: options?.shell,
-    statusMessage: options?.statusMessage,
-    once: options?.once,
-    async: options?.async,
-    asyncRewake: options?.asyncRewake,
     handler,
   });
 }

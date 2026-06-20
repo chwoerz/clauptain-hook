@@ -16,15 +16,8 @@ function defineHandler(event, ...rest) {
   const options = typeof rest[0] === "object" && rest[0] !== null && !Array.isArray(rest[0]) ? rest.shift() : void 0;
   const handler = rest[0];
   return clearUndefineds({
+    ...options,
     event,
-    matcher: options?.matcher,
-    timeout: options?.timeout,
-    if: options?.if,
-    shell: options?.shell,
-    statusMessage: options?.statusMessage,
-    once: options?.once,
-    async: options?.async,
-    asyncRewake: options?.asyncRewake,
     handler
   });
 }

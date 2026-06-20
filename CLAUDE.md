@@ -9,7 +9,7 @@
 
 # Config API
 
-The public API is `defineHandler` only — there is no `defineHooks`. Config files export handlers as named exports; the compiler auto-collects them by their `__event` field. No default export is needed.
+The public API is `defineHandler` only — there is no `defineHooks`. Config files export handlers as named exports; the compiler auto-collects them by their `event` field. No default export is needed.
 
 ```ts
 import { defineHandler } from "clauptain-hook"

@@ -38,8 +38,6 @@ export async function bundleHandlers(
 
   mkdirSync(hooksDir, { recursive: true });
 
-  writeFileSync(resolve(hooksDir, "runtime.cjs"), generateRuntime());
-
   const tmpDir = resolve(hooksDir, `.tmp-${randomUUID().slice(0, 8)}`);
   mkdirSync(tmpDir, { recursive: true });
 
@@ -54,8 +52,7 @@ export async function bundleHandlers(
 
       const entryContent = [
         `import { ${name} } from ${JSON.stringify(absConfigPath)};`,
-        `const { run } = require(__dirname + "/runtime.cjs");`,
-        `run(${name}.handler);`,
+        generateRuntime(`${name}.handler`),
       ].join("\n");
 
       const entryPath = resolve(tmpDir, `${name}.ts`);

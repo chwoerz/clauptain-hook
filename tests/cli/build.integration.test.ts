@@ -32,7 +32,7 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    expect(existsSync(resolve(HOOKS_DIR, "runtime.cjs"))).toBe(true);
+    expect(existsSync(resolve(HOOKS_DIR, "runtime.cjs"))).toBe(false);
     expect(
       existsSync(resolve(HOOKS_DIR, "preToolUse-blockDangerous.cjs")),
     ).toBe(true);

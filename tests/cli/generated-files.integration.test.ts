@@ -43,13 +43,6 @@ describe("generated files", () => {
   });
 
   describe("file snapshots", () => {
-    it("runtime.cjs", async () => {
-      const content = readFileSync(resolve(HOOKS_DIR, "runtime.cjs"), "utf-8");
-      await expect(content).toMatchFileSnapshot(
-        resolve(SNAPSHOT_DIR, "runtime.cjs"),
-      );
-    });
-
     it("preToolUse-blockDangerous.cjs", async () => {
       const content = readFileSync(
         resolve(HOOKS_DIR, "preToolUse-blockDangerous.cjs"),
@@ -100,12 +93,13 @@ describe("generated files", () => {
       });
     });
 
-    it("runtime.cjs exports a run function", () => {
-      const result = execSync(
-        `node -e "const r = require('./runtime.cjs'); console.log(typeof r.run)"`,
-        { encoding: "utf-8", cwd: HOOKS_DIR },
+    it("handler bundles are self-contained (no runtime.cjs)", () => {
+      const content = readFileSync(
+        resolve(HOOKS_DIR, "preToolUse-blockDangerous.cjs"),
+        "utf-8",
       );
-      expect(result.trim()).toBe("function");
+      expect(content).toContain("process.stdin");
+      expect(content).not.toContain('require("./runtime.cjs")');
     });
   });
 

@@ -42,5 +42,22 @@ var onStop = defineHandler("Stop", async (input) => {
 });
 
 // <entry>
-var { run } = require("./runtime.cjs");
-run(onStop.handler);
+var __handler = onStop.handler;
+var __stdin = "";
+process.stdin.setEncoding("utf8");
+process.stdin.on("data", function(chunk) {
+  __stdin += chunk;
+});
+process.stdin.on("end", function() {
+  Promise.resolve().then(function() {
+    return __handler(JSON.parse(__stdin));
+  }).then(function(result) {
+    if (result && Object.keys(result).length > 0) {
+      process.stdout.write(JSON.stringify(result));
+    }
+    process.exit(0);
+  }).catch(function(err) {
+    process.stderr.write(String(err && err.message ? err.message : err));
+    process.exit(2);
+  });
+});

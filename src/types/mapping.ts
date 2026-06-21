@@ -91,7 +91,6 @@ export type HookInputFor<E extends HookEvent> = E extends keyof HookInputMap
   ? HookInputMap[E]
   : never;
 
-
 export interface HookSpecificOutputMap {
   PreToolUse: PreToolUseHookSpecificOutput;
   PostToolUse: PostToolUseHookSpecificOutput;

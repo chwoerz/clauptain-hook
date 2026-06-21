@@ -112,6 +112,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       lineNumbers: 'on',
       scrollBeyondLastLine: false,
       automaticLayout: true,
+      fixedOverflowWidgets: true,
       padding: { top: 12 },
       tabSize: 2,
       readOnly: this.readOnly(),

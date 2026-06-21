@@ -106,7 +106,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       language: lang,
       theme: 'vs-dark',
       minimap: { enabled: false },
-      quickSuggestions: { other: true, strings: true, comments: false },
+      quickSuggestions: { other: false, strings: true, comments: false },
       fontSize: 14,
       fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
       lineNumbers: 'on',

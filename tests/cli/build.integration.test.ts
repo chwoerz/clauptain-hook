@@ -73,9 +73,9 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    expect(
-      existsSync(resolve(MANAGED_DIR, "preToolUse-oldHandler.cjs")),
-    ).toBe(false);
+    expect(existsSync(resolve(MANAGED_DIR, "preToolUse-oldHandler.cjs"))).toBe(
+      false,
+    );
     expect(existsSync(resolve(HOOKS_DIR, "preToolUse-userManual.cjs"))).toBe(
       true,
     );

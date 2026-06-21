@@ -10,7 +10,10 @@ import {
 import { resolve, dirname, relative } from "path";
 import { loadConfig } from "../compiler/load-config.js";
 import { extractHandlers } from "../compiler/extract-handlers.js";
-import { bundleHandlers, type BundledFile } from "../compiler/bundle-handlers.js";
+import {
+  bundleHandlers,
+  type BundledFile,
+} from "../compiler/bundle-handlers.js";
 import { mergeHooksIntoSettings } from "../compiler/merge-hooks.js";
 
 const MANAGED_SUBDIR = "clauptain-hook";
@@ -22,13 +25,12 @@ function removeStaleFiles(
   if (!existsSync(managedDir)) return 0;
 
   const generatedNames = new Set(bundledFiles.map((f) => f.fileName));
-  const staleFiles = readdirSync(managedDir, { withFileTypes: true })
-    .filter(
-      (entry) =>
-        entry.isFile() &&
-        entry.name.endsWith(".cjs") &&
-        !generatedNames.has(entry.name),
-    );
+  const staleFiles = readdirSync(managedDir, { withFileTypes: true }).filter(
+    (entry) =>
+      entry.isFile() &&
+      entry.name.endsWith(".cjs") &&
+      !generatedNames.has(entry.name),
+  );
 
   for (const entry of staleFiles) {
     unlinkSync(resolve(managedDir, entry.name));

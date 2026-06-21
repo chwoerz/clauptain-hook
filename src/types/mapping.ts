@@ -91,6 +91,7 @@ export type HookInputFor<E extends HookEvent> = E extends keyof HookInputMap
   ? HookInputMap[E]
   : never;
 
+
 export interface HookSpecificOutputMap {
   PreToolUse: PreToolUseHookSpecificOutput;
   PostToolUse: PostToolUseHookSpecificOutput;
@@ -150,8 +151,9 @@ export interface HandlerOptions {
   asyncRewake?: boolean;
 }
 
-export interface TypedHandler<E extends HookEvent>
-  extends Readonly<HandlerOptions> {
+export interface TypedHandler<
+  E extends HookEvent,
+> extends Readonly<HandlerOptions> {
   readonly event: E;
   readonly handler: (input: HookInputFor<E>) => Promise<HookOutputFor<E>>;
 }

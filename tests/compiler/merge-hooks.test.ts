@@ -180,9 +180,7 @@ describe("mergeHooksIntoSettings", () => {
       ".claude/hooks/preToolUse-blockDangerous.cjs",
     ]);
 
-    const manualHooks = bashEntry.hooks.filter(
-      (h: any) => !h.__managed,
-    );
+    const manualHooks = bashEntry.hooks.filter((h: any) => !h.__managed);
     expect(manualHooks).toHaveLength(1);
     expect(manualHooks[0].command).toBe("echo manual");
   });

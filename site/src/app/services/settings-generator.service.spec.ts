@@ -27,7 +27,7 @@ describe('SettingsGeneratorService', () => {
                 type: 'command',
                 command: 'node',
                 args: ['.claude/hooks/pre-tool-use-myHandler.cjs'],
-                __managed: 'clauptain-hook',
+                __managed: 'typed-claude-hooks',
               },
             ],
           },

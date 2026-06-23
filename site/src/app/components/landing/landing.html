@@ -2,14 +2,14 @@
   <div class="hero-bg"></div>
   <div class="hero-content">
     <h1 class="hero-title">
-      Clauptain <span class="hero-title-accent">Hook</span>
+      typed-claude-<span class="hero-title-accent">hooks</span>
     </h1>
     <p class="hero-tagline">Type-safe hooks for Claude Code. All 30 events. Full autocomplete. One build command.</p>
     <div class="comparison-table">
       <div class="comparison-header">
         <span></span>
         <span class="col-label col-raw">Bash / JS</span>
-        <span class="col-label col-ch">clauptain-hook</span>
+        <span class="col-label col-ch">typed-claude-hooks</span>
       </div>
       <div class="comparison-row">
         <span class="row-label">Type safety and autocomplete</span>
@@ -34,7 +34,7 @@
     </div>
     <div class="hero-actions">
       <div class="install-command">
-        <code>npm install clauptain-hook</code>
+        <code>npm install typed-claude-hooks</code>
         <button class="copy-btn" (click)="copyInstall()">
           {{ copied() ? '✓ Copied' : '⧉ Copy' }}
         </button>
@@ -57,18 +57,18 @@
 </section>
 
 <section class="features">
-  <h2>Why clauptain-hook?</h2>
+  <h2>Why typed-claude-hooks?</h2>
   <p class="features-subtitle">See what changes when you stop writing hooks without Type-Safety or as bash scripts.</p>
 
   <div class="feature-row">
     <div class="feature-text">
       <h3>Type-safe everything</h3>
-      <p>Raw hooks give you unstructured JSON piped through stdin. Typo in a field name? Silent bug. Clauptain-hook gives you real TypeScript types for every event — mistakes are caught at compile time, not production.</p>
+      <p>Raw hooks give you unstructured JSON piped through stdin. Typo in a field name? Silent bug. typed-claude-hooks gives you real TypeScript types for every event — mistakes are caught at compile time, not production.</p>
     </div>
     <div class="feature-code">
       <div class="feature-code-tabs">
         <button class="feature-tab" [class.active]="getTab('typeSafety') === 'raw'" (click)="selectTab('typeSafety', 'raw')">Raw hooks</button>
-        <button class="feature-tab" [class.active]="getTab('typeSafety') === 'typed'" (click)="selectTab('typeSafety', 'typed')">clauptain-hook</button>
+        <button class="feature-tab" [class.active]="getTab('typeSafety') === 'typed'" (click)="selectTab('typeSafety', 'typed')">typed-claude-hooks</button>
       </div>
       @if (getTab('typeSafety') === 'raw') {
         <pre><code class="hljs" [innerHTML]="rawTypeSafety"></code></pre>
@@ -86,7 +86,7 @@
     <div class="feature-code">
       <div class="feature-code-tabs">
         <button class="feature-tab" [class.active]="getTab('narrowing') === 'raw'" (click)="selectTab('narrowing', 'raw')">Raw hooks</button>
-        <button class="feature-tab" [class.active]="getTab('narrowing') === 'typed'" (click)="selectTab('narrowing', 'typed')">clauptain-hook</button>
+        <button class="feature-tab" [class.active]="getTab('narrowing') === 'typed'" (click)="selectTab('narrowing', 'typed')">typed-claude-hooks</button>
       </div>
       @if (getTab('narrowing') === 'raw') {
         <pre><code class="hljs" [innerHTML]="rawNarrowing"></code></pre>
@@ -104,7 +104,7 @@
     <div class="feature-code">
       <div class="feature-code-tabs">
         <button class="feature-tab" [class.active]="getTab('testing') === 'raw'" (click)="selectTab('testing', 'raw')">Raw hooks</button>
-        <button class="feature-tab" [class.active]="getTab('testing') === 'typed'" (click)="selectTab('testing', 'typed')">clauptain-hook</button>
+        <button class="feature-tab" [class.active]="getTab('testing') === 'typed'" (click)="selectTab('testing', 'typed')">typed-claude-hooks</button>
       </div>
       @if (getTab('testing') === 'raw') {
         <pre><code class="hljs" [innerHTML]="rawTesting"></code></pre>
@@ -117,12 +117,12 @@
   <div class="feature-row reverse">
     <div class="feature-text">
       <h3>Zero-config settings.json</h3>
-      <p>Run <code>npx clauptain-hook</code> and your settings.json is generated from your handler files. Add a hook, rebuild — done. No hand-editing JSON, no drift between code and config.</p>
+      <p>Run <code>npx typed-claude-hooks</code> and your settings.json is generated from your handler files. Add a hook, rebuild — done. No hand-editing JSON, no drift between code and config.</p>
     </div>
     <div class="feature-code">
       <div class="feature-code-tabs">
         <button class="feature-tab" [class.active]="getTab('settingsGen') === 'raw'" (click)="selectTab('settingsGen', 'raw')">Raw hooks</button>
-        <button class="feature-tab" [class.active]="getTab('settingsGen') === 'typed'" (click)="selectTab('settingsGen', 'typed')">clauptain-hook</button>
+        <button class="feature-tab" [class.active]="getTab('settingsGen') === 'typed'" (click)="selectTab('settingsGen', 'typed')">typed-claude-hooks</button>
       </div>
       @if (getTab('settingsGen') === 'raw') {
         <pre><code class="hljs" [innerHTML]="rawSettingsGen"></code></pre>

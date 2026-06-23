@@ -8,7 +8,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CLAUPTAIN_HOOK_DTS, STARTER_CODE } from './monaco-types';
+import { TYPED_CLAUDE_HOOKS_DTS, STARTER_CODE } from './monaco-types';
 
 declare const require: any;
 
@@ -96,8 +96,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       });
 
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        CLAUPTAIN_HOOK_DTS,
-        'file:///node_modules/clauptain-hook/index.d.ts',
+        TYPED_CLAUDE_HOOKS_DTS,
+        'file:///node_modules/typed-claude-hooks/index.d.ts',
       );
     }
 

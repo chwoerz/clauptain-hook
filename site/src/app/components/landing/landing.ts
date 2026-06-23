@@ -95,7 +95,7 @@ export class LandingComponent {
   ].join('\n');
 
   readonly featureTesting = [
-    `<span class="kw">import</span> { <span class="fn">testHandler</span> } <span class="kw">from</span> <span class="str">'clauptain-hook/test'</span>;`,
+    `<span class="kw">import</span> { <span class="fn">testHandler</span> } <span class="kw">from</span> <span class="str">'typed-claude-hooks/test'</span>;`,
     `<span class="kw">import</span> <span class="pr">handler</span> <span class="kw">from</span> <span class="str">'./block-rm'</span>;`,
     ``,
     `<span class="fn">it</span>(<span class="str">'blocks rm -rf'</span>, <span class="kw">async</span> () =&gt; {`,
@@ -107,7 +107,7 @@ export class LandingComponent {
   ].join('\n');
 
   readonly featureSettingsGen = [
-    `<span class="term-prompt">$</span> npx clauptain-hook`,
+    `<span class="term-prompt">$</span> npx typed-claude-hooks`,
     ``,
     `<span class="term-ok">✓</span> Found 3 handlers`,
     `<span class="term-ok">✓</span> Generated .claude/settings.json`,
@@ -116,7 +116,7 @@ export class LandingComponent {
   ].join('\n');
 
   copyInstall(): void {
-    navigator.clipboard.writeText('npm install clauptain-hook');
+    navigator.clipboard.writeText('npm install typed-claude-hooks');
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 2000);
   }

@@ -1,6 +1,6 @@
-export { CLAUPTAIN_HOOK_DTS } from './generated-dts';
+export { TYPED_CLAUDE_HOOKS_DTS } from './generated-dts';
 
-export const STARTER_CODE = `import { defineHandler } from "clauptain-hook";
+export const STARTER_CODE = `import { defineHandler } from "typed-claude-hooks";
 
 // Block dangerous rm commands
 export const blockRm = defineHandler("PreToolUse",
@@ -9,7 +9,6 @@ export const blockRm = defineHandler("PreToolUse",
   if (input.tool_input.command.includes("rm ")) {
     return {
       hookSpecificOutput: {
-        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "rm commands are not allowed",
       },

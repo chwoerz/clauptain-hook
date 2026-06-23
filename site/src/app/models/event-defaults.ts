@@ -1,4 +1,4 @@
-import type {BuiltinToolName, HookEvent, HookInputMap, ToolInputMap,} from 'clauptain-hook/types';
+import type {BuiltinToolName, HookEvent, HookInputMap, ToolInputMap,} from 'typed-claude-hooks/types';
 
 export const HOOK_EVENTS: readonly HookEvent[] = [
   'PreToolUse',
@@ -214,12 +214,14 @@ const EVENT_DEFAULT_CUSTOMS: { [E in HookEvent]: NoBase<E> } = {
 export function buildEventInput<T extends HookEventName>(event: T, toolName?: string): HookInputMap[T] {
   const defaults = {
     ...EVENT_DEFAULT_CUSTOMS[event], ...BASE,
-    hook_event_name: event
+    hook_event_name: event,
   } as HookInputMap[T];
 
-  if (toolName && TOOL_USE_EVENTS.has(event) && toolName in TOOL_DEFAULTS) {
-    defaults['tool_name'] = toolName;
-    defaults['tool_input'] = TOOL_DEFAULTS[toolName as BuiltinToolName];
+  if (TOOL_USE_EVENTS.has(event)) {
+    const tool: BuiltinToolName = (toolName as BuiltinToolName) ?? 'Bash';
+    const d = defaults as Record<string, unknown>;
+    d['tool_name'] = tool;
+    d['tool_input'] = TOOL_DEFAULTS[tool];
   }
 
   return defaults;

@@ -19,13 +19,12 @@ export const SCENARIOS: Scenario[] = [
     id: 'block-rm',
     title: "Block the Scallywag's rm",
     tagline: 'Deny any Bash command containing rm',
-    hookCode: `import { defineHandler } from "clauptain-hook";
+    hookCode: `import { defineHandler } from "typed-claude-hooks";
 
 export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (input) => {
   if (input.tool_input.command.includes("rm ")) {
     return {
       hookSpecificOutput: {
-        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "No rm allowed, ye scurvy dog!",
       },
@@ -70,13 +69,12 @@ export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (i
     id: 'guard-env',
     title: 'Guard the Treasure Map (.env)',
     tagline: 'Block any writes to .env files',
-    hookCode: `import { defineHandler } from "clauptain-hook";
+    hookCode: `import { defineHandler } from "typed-claude-hooks";
 
 export const protectEnv = defineHandler("PreToolUse", { matcher: "Write" }, async (input) => {
   if (input.tool_input.file_path.endsWith(".env")) {
     return {
       hookSpecificOutput: {
-        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "The treasure map (.env) is sacred!",
       },
@@ -121,12 +119,11 @@ export const protectEnv = defineHandler("PreToolUse", { matcher: "Write" }, asyn
     id: 'captains-log',
     title: "The Captain's Log",
     tagline: 'Add context after every Bash command',
-    hookCode: `import { defineHandler } from "clauptain-hook";
+    hookCode: `import { defineHandler } from "typed-claude-hooks";
 
 export const captainsLog = defineHandler("PostToolUse", { matcher: "Bash" }, async (input) => {
   return {
     hookSpecificOutput: {
-      hookEventName: "PostToolUse",
       additionalContext: "Captain's log: command executed successfully. Remember to check for side effects.",
     },
   };

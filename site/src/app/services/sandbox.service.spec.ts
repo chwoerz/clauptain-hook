@@ -11,7 +11,7 @@ describe('SandboxService', () => {
 
   it('should collect named handler exports', () => {
     const code = `
-      const { defineHandler } = require("clauptain-hook");
+      const { defineHandler } = require("typed-claude-hooks");
       const myHandler = defineHandler("PreToolUse", async (input) => ({}));
       module.exports.myHandler = myHandler;
     `;
@@ -28,12 +28,12 @@ describe('SandboxService', () => {
 
   it('should match handlers by tool name', async () => {
     const code = `
-      const { defineHandler } = require("clauptain-hook");
+      const { defineHandler } = require("typed-claude-hooks");
       const bashOnly = defineHandler("PreToolUse", { matcher: "Bash" }, async () => ({
-        hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: "bash" },
+        hookSpecificOutput: { additionalContext: "bash" },
       }));
       const writeOnly = defineHandler("PreToolUse", { matcher: "Write" }, async () => ({
-        hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: "write" },
+        hookSpecificOutput: { additionalContext: "write" },
       }));
       module.exports.bashOnly = bashOnly;
       module.exports.writeOnly = writeOnly;
@@ -54,12 +54,11 @@ describe('SandboxService', () => {
 
   it('should run a handler that denies', async () => {
     const code = `
-      const { defineHandler } = require("clauptain-hook");
+      const { defineHandler } = require("typed-claude-hooks");
       const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (input) => {
         if (input.tool_input.command.includes("rm ")) {
           return {
             hookSpecificOutput: {
-              hookEventName: "PreToolUse",
               permissionDecision: "deny",
               permissionDecisionReason: "blocked",
             },

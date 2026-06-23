@@ -18,7 +18,7 @@ export interface TranspileResult {
   error?: string;
 }
 
-const CLAUPTAIN_HOOK_MODULE = {
+const TYPED_CLAUDE_HOOKS_MODULE = {
   defineHandler(
     event: string,
     optionsOrHandler: Record<string, unknown> | Function,
@@ -53,7 +53,7 @@ export class SandboxService {
     try {
       const moduleObj: { exports: Record<string, any> } = { exports: {} };
       const requireFn = (name: string) => {
-        if (name === 'clauptain-hook') return CLAUPTAIN_HOOK_MODULE;
+        if (name === 'typed-claude-hooks') return TYPED_CLAUDE_HOOKS_MODULE;
         throw new Error(`Cannot require "${name}" in browser sandbox`);
       };
       const fn = new Function('module', 'exports', 'require', jsCode);
@@ -105,9 +105,14 @@ export class SandboxService {
       const start = performance.now();
       try {
         const output = await hook.handler(input as any);
+        const result = output ?? {};
+        const hso = result.hookSpecificOutput;
+        if (hso && !hso.hookEventName) {
+          hso.hookEventName = hook.event;
+        }
         results.push({
           handlerName,
-          output: output ?? {},
+          output: result,
           durationMs: performance.now() - start,
         });
       } catch (e: any) {

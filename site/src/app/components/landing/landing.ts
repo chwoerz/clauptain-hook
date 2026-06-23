@@ -18,6 +18,32 @@ export class LandingComponent {
     return this.activeTab()[feature] ?? 'typed';
   }
 
+  readonly heroRawCode = [
+    `<span class="cm">#!/usr/bin/env node</span>`,
+    `<span class="kw">const</span> <span class="pr">data</span> = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>);`,
+    `<span class="kw">const</span> <span class="pr">input</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="pr">data</span>);`,
+    ``,
+    `<span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr raw-typo">comand</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
+    `  <span class="pr">process</span>.<span class="pr">stdout</span>.<span class="fn">write</span>(`,
+    `    <span class="fn">JSON</span>.<span class="fn">stringify</span>({ <span class="pr">decision</span>: <span class="str">'deny'</span> })`,
+    `  );`,
+    `}`,
+  ].join('\n');
+
+  readonly heroTypedCode = [
+    `<span class="kw">export const</span> <span class="pr">guard</span> = <span class="fn">defineHandler</span>(`,
+    `  <span class="str">"PreToolUse"</span>,`,
+    `  { <span class="pr">matcher</span>: <span class="str">"Bash"</span> },`,
+    `  (<span class="pr">input</span>) =&gt; {`,
+    `    <span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="ide-anchor"><span class="ide-cursor"></span><span class="ide-autocomplete"><span class="ide-ac-row selected"><span class="ide-ac-icon"></span><span class="ide-ac-label">command</span><span class="ide-ac-type">string</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">timeout</span><span class="ide-ac-type">number</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">description</span><span class="ide-ac-type">string</span></span></span></span>`,
+    ``,
+    `    <span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr">command</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
+    `      <span class="kw">return</span> { <span class="pr">decision</span>: <span class="str">'deny'</span> };`,
+    `    }`,
+    `  }`,
+    `);`,
+  ].join('\n');
+
   readonly rawTypeSafety = [
     `<span class="cm">#!/usr/bin/env node</span>`,
     `<span class="kw">const</span> <span class="pr">data</span> = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>);`,

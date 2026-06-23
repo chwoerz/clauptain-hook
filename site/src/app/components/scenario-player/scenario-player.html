@@ -1,6 +1,6 @@
 <section class="scenarios">
-  <h2>Missions</h2>
-  <p class="subtitle">See hooks in action — run these scenarios to watch them fire.</p>
+  <h2>Examples</h2>
+  <p class="subtitle">See hooks in action — pick a scenario and run it.</p>
 
   @for (scenario of scenarios; track scenario.id) {
     <app-scenario-card [scenario]="scenario" (loadInPlayground)="loadInPlayground.emit($event)" />

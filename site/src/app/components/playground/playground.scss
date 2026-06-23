@@ -1,5 +1,5 @@
 @use 'styles/variables' as *;
-@use 'styles/pirate-theme' as *;
+@use 'styles/ide-theme' as *;
 
 .playground {
   max-width: 1400px;
@@ -41,7 +41,7 @@
     left: 0;
     right: 0;
     padding: 0.5rem 1rem;
-    background: linear-gradient(180deg, $surface-secondary 0%, transparent 100%);
+    background: linear-gradient(180deg, $bg-editor 0%, transparent 100%);
     color: $text-muted;
     font-size: 0.75rem;
     font-family: $font-body;
@@ -61,8 +61,8 @@
 
 .tabs {
   display: flex;
-  background: $surface-secondary;
-  border-bottom: 1px solid $border-light;
+  background: $bg-sidebar;
+  border-bottom: 1px solid $border-subtle;
 }
 
 .tab {
@@ -80,17 +80,17 @@
 
   &:hover {
     color: $text-primary;
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.02);
   }
 
   &.active {
-    color: $gold;
-    border-bottom-color: $gold;
-    background: rgba($gold, 0.03);
+    color: $accent-blue;
+    border-bottom-color: $border-active;
+    background: rgba($accent-blue, 0.05);
   }
 
   & + & {
-    border-left: 1px solid $border-light;
+    border-left: 1px solid $border-subtle;
   }
 }
 

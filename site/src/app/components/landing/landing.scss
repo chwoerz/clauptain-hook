@@ -1,54 +1,20 @@
 @use 'styles/variables' as *;
-@use 'styles/pirate-theme' as *;
+@use 'styles/ide-theme' as *;
 
 .hero {
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: linear-gradient(180deg, $surface-primary 0%, $surface-secondary 100%);
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 30%, rgba($gold, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 80%, rgba($surface-secondary, 0.5) 0%, transparent 50%);
-  z-index: 0;
-}
-
-.logo {
-  margin-bottom: 1rem;
-}
-
-.logo-svg {
-  width: 100px;
-  height: 120px;
-  filter: drop-shadow(0 2px 8px rgba($gold, 0.2));
-  animation: sway 5s ease-in-out infinite;
-
-  @media (max-width: $breakpoint-md) {
-    width: 72px;
-    height: 88px;
-  }
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding: 5rem 2rem 7rem;
+  background: $bg-editor;
+  border-bottom: 1px solid $border-subtle;
+  padding: 5rem 2rem 4rem;
 }
 
 .hero-title {
-  font-family: $font-pirate;
+  font-family: $font-heading;
   font-size: 3.5rem;
+  font-weight: 700;
   color: $text-primary;
   margin-bottom: 0.75rem;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
 
   @media (max-width: $breakpoint-md) {
     font-size: 2.5rem;
@@ -56,104 +22,120 @@
 }
 
 .hero-title-accent {
-  color: $gold;
-}
-
-@keyframes sway {
-  0%,
-  100% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
+  color: $accent-purple;
 }
 
 .hero-tagline {
   font-size: 1.3rem;
   color: $text-secondary;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   font-weight: 500;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.comparison-table {
-  display: inline-grid;
-  grid-template-columns: auto auto auto;
-  gap: 0;
-  margin-bottom: 2rem;
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto 2.5rem;
   text-align: left;
-  border: 1px solid $border-medium;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.7);
-  overflow: hidden;
-}
 
-.comparison-header {
-  display: contents;
-
-  > span {
-    padding: 0.5rem 1.25rem;
-    background: rgba(0, 0, 0, 0.03);
-    border-bottom: 1px solid $border-medium;
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
   }
 }
 
-.col-label {
+.editor-pane {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: $shadow-lg;
+}
+
+.pane-raw {
+  background: $bg-sidebar;
+  border: 1px solid rgba($accent-red, 0.2);
+  position: relative;
+}
+
+.pane-typed {
+  background: $bg-sidebar;
+  border: 1px solid rgba($accent-teal, 0.2);
+}
+
+.pane-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #181818;
+  border-radius: 12px 12px 0 0;
+  color: $text-secondary;
   font-family: $font-body;
   font-size: 0.8125rem;
-  font-weight: 700;
-  text-align: center;
-  color: $text-muted;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
-.comparison-row {
-  display: contents;
+.tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
 
-  > span {
-    padding: 0.4rem 1.25rem;
-    border-bottom: 1px solid $border-light;
+.dot-red {
+  background: $accent-red;
+}
+
+.dot-teal {
+  background: $accent-teal;
+}
+
+.pane-code {
+  font-family: $font-code;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  padding: 1rem 1.25rem 1.5rem;
+  margin: 0;
+  color: #d4d4d4;
+  overflow: visible;
+
+  code {
+    background: none;
+    padding: 0;
+    color: #d4d4d4;
+    font-size: inherit;
   }
-
-  &:last-child > span {
-    border-bottom: none;
-  }
 }
 
-.row-label {
-  font-family: $font-body;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: $text-secondary;
+.error-tooltip {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  right: 16px;
+  background: #252526;
+  border: 1px solid $accent-red;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: $font-code;
+  font-size: 0.75rem;
+  color: $accent-red;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  animation: pulse-red 3s ease-in-out infinite;
 }
 
-.mark {
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 700;
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-.mark-no {
-  color: $blood-red;
+.pane-typed .ide-autocomplete {
+  animation: fade-in 0.4s ease-out 0.5s both;
 }
 
-.mark-yes {
-  color: $sea-green;
-}
-
-@media (max-width: $breakpoint-md) {
-  .comparison-table {
-    font-size: 0.8rem;
-  }
-
-  .comparison-row > span,
-  .comparison-header > span {
-    padding: 0.35rem 0.75rem;
-  }
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .hero-actions {
@@ -173,15 +155,15 @@
   code {
     background: none;
     padding: 0;
-    color: $sea-green;
+    color: $accent-teal;
     font-size: 0.9375rem;
   }
 }
 
 .copy-btn {
-  background: $surface-dark-hover;
-  border: 1px solid $text-secondary;
-  color: $text-on-dark-muted;
+  background: $bg-input;
+  border: 1px solid $border-default;
+  color: $text-muted;
   cursor: pointer;
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
@@ -190,14 +172,14 @@
   transition: all 0.2s;
 
   &:hover {
-    color: $gold;
-    border-color: $gold;
-    background: rgba($gold, 0.1);
+    color: $accent-purple;
+    border-color: $accent-purple;
+    background: rgba($accent-purple, 0.1);
   }
 }
 
 .cta-button {
-  @include gold-button;
+  @include primary-button;
   display: inline-block;
   font-size: 1rem;
   padding: 0.75rem 2rem;
@@ -205,65 +187,10 @@
   letter-spacing: 0.01em;
 }
 
-.waves {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 80px;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.wave {
-  position: absolute;
-  bottom: 0;
-  left: -5%;
-  width: 110%;
-  height: 100%;
-
-  path {
-    fill: $surface-secondary;
-  }
-
-  &.wave-1 {
-    opacity: 0.3;
-    animation: wave-drift 8s ease-in-out infinite;
-
-    path {
-      fill: $border-medium;
-    }
-  }
-
-  &.wave-2 {
-    opacity: 0.4;
-    animation: wave-drift 6s ease-in-out infinite reverse;
-
-    path {
-      fill: $border-light;
-    }
-  }
-
-  &.wave-3 {
-    opacity: 1;
-    animation: wave-drift 10s ease-in-out infinite;
-  }
-}
-
-@keyframes wave-drift {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(3%);
-  }
-}
-
-// Features section — alternating rows
+// Features section
 .features {
   padding: 4rem 2rem;
-  background: $surface-secondary;
+  background: $bg-sidebar;
   text-align: center;
 
   h2 {
@@ -289,19 +216,13 @@
 
   &.reverse {
     direction: rtl;
-
-    > * {
-      direction: ltr;
-    }
+    > * { direction: ltr; }
   }
 
   @media (max-width: $breakpoint-md) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-
-    &.reverse {
-      direction: ltr;
-    }
+    &.reverse { direction: ltr; }
   }
 }
 
@@ -321,9 +242,10 @@
 }
 
 .feature-code {
-  background: #1e1e1e;
+  background: $bg-editor;
+  border: 1px solid $border-subtle;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: $shadow-md;
   overflow: hidden;
 
   pre {
@@ -344,31 +266,6 @@
   }
 }
 
-.feature-code-dots {
-  display: flex;
-  gap: 6px;
-  padding: 10px 16px;
-  background: #181818;
-  border-radius: 12px 12px 0 0;
-
-  span {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: block;
-  }
-
-  .dot-red {
-    background: #ff5f57;
-  }
-  .dot-yellow {
-    background: #febc2e;
-  }
-  .dot-green {
-    background: #28c840;
-  }
-}
-
 .feature-code-tabs {
   display: flex;
   background: #181818;
@@ -381,15 +278,26 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: #808080;
+  color: $text-muted;
   font-family: $font-body;
   font-size: 0.8125rem;
   cursor: pointer;
 
   &:first-child { border-radius: 12px 0 0 0; }
   &:last-child { border-radius: 0 12px 0 0; }
-  &:hover:not(.active) { color: #b0b0b0; }
-  &.active { color: #d4d4d4; border-bottom-color: $gold; }
+  &:hover:not(.active) { color: $text-secondary; }
+  &.active { color: $text-primary; border-bottom-color: $accent-purple; }
+}
+
+.features-note {
+  color: $text-faint;
+  font-size: 0.8125rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $border-subtle;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // ─── VS Code Dark+ syntax colors ─────────────────────────
@@ -543,15 +451,4 @@
     vertical-align: baseline;
     letter-spacing: 0.02em;
   }
-}
-
-.features-note {
-  color: $text-faint;
-  font-size: 0.8125rem;
-  margin-top: 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid $border-light;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
 }

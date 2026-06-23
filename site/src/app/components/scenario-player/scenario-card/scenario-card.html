@@ -16,11 +16,11 @@
               <span class="step-label">{{ sr.step.label }}</span>
               @if (sr.ran) {
                 @if (sr.decision === 'deny') {
-                  <span class="badge deny">☠ Denied</span>
+                  <span class="badge deny">✗ Denied</span>
                 } @else if (sr.context) {
-                  <span class="badge context">📜 Context Added</span>
+                  <span class="badge context">ℹ Context</span>
                 } @else {
-                  <span class="badge allow">⚓ Allowed</span>
+                  <span class="badge allow">✓ Allowed</span>
                 }
               }
             </div>

@@ -1,5 +1,5 @@
 @use 'styles/variables' as *;
-@use 'styles/pirate-theme' as *;
+@use 'styles/ide-theme' as *;
 
 .card {
   @include card;
@@ -7,13 +7,13 @@
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: $border-medium;
+    border-color: $border-default;
     box-shadow: $shadow-md;
   }
 
   &.expanded {
-    border-color: rgba($gold, 0.4);
-    box-shadow: $shadow-md, $shadow-gold;
+    border-color: rgba($accent-purple, 0.4);
+    box-shadow: $shadow-md, 0 0 12px rgba($accent-purple, 0.1);
   }
 }
 
@@ -36,7 +36,7 @@
   }
 
   &:hover h3 {
-    color: $gold;
+    color: $accent-purple;
   }
 
   .tagline {
@@ -46,7 +46,7 @@
   }
 
   .expand-icon {
-    color: $gold;
+    color: $accent-purple;
     font-size: 1.25rem;
     transition: transform 0.2s;
   }
@@ -59,7 +59,7 @@
 .card-body {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid $border-light;
+  border-top: 1px solid $border-subtle;
 }
 
 .hook-code {
@@ -76,8 +76,8 @@
     top: 0;
     right: 0;
     padding: 0.2rem 0.6rem;
-    background: rgba($copper, 0.15);
-    color: $copper;
+    background: rgba($accent-purple, 0.15);
+    color: $accent-purple;
     font-size: 0.6875rem;
     font-family: $font-body;
     text-transform: uppercase;
@@ -88,7 +88,7 @@
   code {
     background: none;
     padding: 0;
-    color: $text-on-dark;
+    color: $text-primary;
   }
 }
 
@@ -101,14 +101,14 @@
 
 .step {
   padding: 0.75rem 1rem;
-  border-left: 3px solid $border-medium;
+  border-left: 3px solid $border-subtle;
   border-radius: 0 6px 6px 0;
-  background: $surface-secondary;
+  background: $bg-editor;
   transition: all 0.3s;
 
   &.ran {
-    border-left-color: $gold;
-    background: rgba($gold, 0.05);
+    border-left-color: $accent-purple;
+    background: rgba($accent-purple, 0.05);
   }
 }
 
@@ -132,21 +132,21 @@
   border: 1px solid;
 
   &.allow {
-    background: rgba($sea-green, 0.1);
-    color: $sea-green;
-    border-color: rgba($sea-green, 0.25);
+    background: rgba($accent-teal, 0.1);
+    color: $accent-teal;
+    border-color: rgba($accent-teal, 0.25);
   }
 
   &.deny {
-    background: rgba($blood-red, 0.1);
-    color: $blood-red;
-    border-color: rgba($blood-red, 0.25);
+    background: rgba($accent-red, 0.1);
+    color: $accent-red;
+    border-color: rgba($accent-red, 0.25);
   }
 
   &.context {
-    background: rgba($gold, 0.1);
-    color: $copper;
-    border-color: rgba($gold, 0.25);
+    background: rgba($accent-blue, 0.1);
+    color: $accent-blue;
+    border-color: rgba($accent-blue, 0.25);
   }
 }
 
@@ -161,13 +161,13 @@
 }
 
 .run-btn {
-  @include gold-button;
+  @include primary-button;
 }
 
 .load-btn {
   background: transparent;
-  border: 1px solid rgba($gold, 0.4);
-  color: $gold;
+  border: 1px solid rgba($accent-purple, 0.4);
+  color: $accent-purple;
   border-radius: 8px;
   padding: 0.5rem 1.25rem;
   cursor: pointer;
@@ -175,8 +175,8 @@
   transition: all 0.2s;
 
   &:hover {
-    border-color: $gold;
-    background: rgba($gold, 0.06);
+    border-color: $accent-purple;
+    background: rgba($accent-purple, 0.06);
     transform: translateY(-1px);
   }
 }

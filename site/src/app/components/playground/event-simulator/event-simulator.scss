@@ -1,5 +1,5 @@
 @use 'styles/variables' as *;
-@use 'styles/pirate-theme' as *;
+@use 'styles/ide-theme' as *;
 
 .simulator {
   display: flex;
@@ -30,9 +30,9 @@
   }
 
   select {
-    background: #ffffff;
+    background: $bg-input;
     color: $text-primary;
-    border: 1px solid $border-medium;
+    border: 1px solid $border-default;
     border-radius: 6px;
     padding: 0.5rem 0.75rem;
     font-family: $font-body;
@@ -42,9 +42,9 @@
       box-shadow 0.2s;
 
     &:focus {
-      border-color: $gold;
+      border-color: $accent-blue;
       outline: none;
-      box-shadow: 0 0 0 2px rgba($gold, 0.15);
+      box-shadow: 0 0 0 2px rgba($accent-blue, 0.15);
     }
   }
 }
@@ -70,7 +70,7 @@
 }
 
 .fire-btn {
-  @include gold-button;
+  @include primary-button;
   font-size: 1rem;
   padding: 0.85rem;
 
@@ -83,11 +83,11 @@
 }
 
 .error-box {
-  background: rgba($blood-red, 0.06);
-  border: 1px solid rgba($blood-red, 0.2);
+  background: rgba($accent-red, 0.06);
+  border: 1px solid rgba($accent-red, 0.2);
   border-radius: 6px;
   padding: 0.75rem 1rem;
-  color: $blood-red;
+  color: $accent-red;
   font-family: $font-code;
   font-size: 0.8125rem;
   white-space: pre-wrap;
@@ -103,8 +103,8 @@
   margin-bottom: 1rem;
 
   &.blocked {
-    border-color: rgba($blood-red, 0.3);
-    box-shadow: 0 0 12px rgba($blood-red, 0.06);
+    border-color: rgba($accent-red, 0.3);
+    box-shadow: 0 0 12px rgba($accent-red, 0.06);
   }
 }
 
@@ -113,14 +113,14 @@
   font-weight: 700;
 
   &.deny {
-    color: $blood-red;
+    color: $accent-red;
   }
   &.allow,
   &.pass {
-    color: $sea-green;
+    color: $accent-teal;
   }
   &.context {
-    color: $gold;
+    color: $accent-blue;
   }
 }
 
@@ -132,7 +132,7 @@
 
 .context-text {
   margin-top: 0.5rem;
-  color: $copper;
+  color: $accent-orange;
   font-family: $font-code;
   font-size: 0.875rem;
 }
@@ -152,7 +152,7 @@ h4 {
   margin-bottom: 0.5rem;
 
   &.error {
-    border-color: rgba($blood-red, 0.3);
+    border-color: rgba($accent-red, 0.3);
   }
 }
 
@@ -165,7 +165,7 @@ h4 {
 
 .handler-name {
   font-family: $font-code;
-  color: $copper;
+  color: $accent-orange;
   font-weight: 600;
   font-size: 0.875rem;
 }
@@ -189,5 +189,5 @@ h4 {
   color: $text-primary;
 }
 .handler-error {
-  color: $blood-red;
+  color: $accent-red;
 }

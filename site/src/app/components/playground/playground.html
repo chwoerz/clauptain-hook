@@ -13,13 +13,13 @@
           [class.active]="activeTab() === 'simulator'"
           (click)="activeTab.set('simulator')"
         >
-          💥 Fire the Cannons
+          ▶ Run
         </button>
         <button class="tab" [class.active]="activeTab() === 'map'" (click)="activeTab.set('map')">
-          🗺 The Map
+          {{ '{' }}{{ '}' }} settings.json
         </button>
         <button class="tab" [class.active]="activeTab() === 'sail'" (click)="activeTab.set('sail')">
-          ⛵ Set Sail
+          $ Getting Started
         </button>
       </div>
 

@@ -33,7 +33,7 @@
     </div>
 
     <button class="fire-btn" (click)="fire()" [disabled]="firing()">
-      {{ firing() ? 'Firing...' : '💥 Fire the Cannons!' }}
+      {{ firing() ? 'Running...' : '▶ Run' }}
     </button>
   </div>
 
@@ -46,13 +46,13 @@
       <div class="summary" [class.blocked]="lastSummary()?.blocked">
         @if (lastSummary(); as s) {
           @if (s.decision === 'deny') {
-            <span class="verdict deny">☠ DENIED</span>
+            <span class="verdict deny">✗ DENIED</span>
           } @else if (s.decision === 'allow') {
-            <span class="verdict allow">⚓ ALLOWED</span>
+            <span class="verdict allow">✓ ALLOWED</span>
           } @else if (s.additionalContext) {
-            <span class="verdict context">📜 Context Added</span>
+            <span class="verdict context">ℹ Context Added</span>
           } @else {
-            <span class="verdict pass">⚓ Passed (no action)</span>
+            <span class="verdict pass">✓ Passed (no action)</span>
           }
 
           @if (s.decisionReason) {

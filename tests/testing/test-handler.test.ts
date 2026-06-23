@@ -9,7 +9,6 @@ const blockEnv = defineHandler(
     if (input.tool_input.file_path.endsWith(".env")) {
       return {
         hookSpecificOutput: {
-          hookEventName: "PreToolUse" as const,
           permissionDecision: "deny" as const,
           permissionDecisionReason: "blocked",
         },

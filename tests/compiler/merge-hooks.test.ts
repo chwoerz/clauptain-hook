@@ -43,7 +43,7 @@ describe("mergeHooksIntoSettings", () => {
     expect(result.hooks.PreToolUse[0].matcher).toBe("Bash");
     expect(result.hooks.PreToolUse[0].hooks[0].command).toBe("node");
     expect(result.hooks.PreToolUse[0].hooks[0].__managed).toBe(
-      "clauptain-hook",
+      "typed-claude-hooks",
     );
     expect(result.hooks.Stop).toHaveLength(1);
   });
@@ -78,7 +78,7 @@ describe("mergeHooksIntoSettings", () => {
               {
                 type: "command",
                 command: "node old.js",
-                __managed: "clauptain-hook",
+                __managed: "typed-claude-hooks",
               },
             ],
           },
@@ -106,7 +106,7 @@ describe("mergeHooksIntoSettings", () => {
     expect(oldManaged).toBeUndefined();
 
     const newManaged = preToolUse.find((m: any) =>
-      m.hooks.some((h: any) => h.__managed === "clauptain-hook"),
+      m.hooks.some((h: any) => h.__managed === "typed-claude-hooks"),
     );
     expect(newManaged).toBeTruthy();
   });
@@ -138,7 +138,7 @@ describe("mergeHooksIntoSettings", () => {
     expect(bashEntry.matcher).toBe("Bash");
     expect(bashEntry.hooks).toHaveLength(2);
     expect(bashEntry.hooks[0].command).toBe("echo manual");
-    expect(bashEntry.hooks[1].__managed).toBe("clauptain-hook");
+    expect(bashEntry.hooks[1].__managed).toBe("typed-claude-hooks");
   });
 
   it("cleans up stale managed hooks from merged entries on rebuild", () => {
@@ -153,7 +153,7 @@ describe("mergeHooksIntoSettings", () => {
                 type: "command",
                 command: "node",
                 args: [".claude/hooks/preToolUse-oldHandler.cjs"],
-                __managed: "clauptain-hook",
+                __managed: "typed-claude-hooks",
               },
             ],
           },
@@ -173,7 +173,7 @@ describe("mergeHooksIntoSettings", () => {
     expect(bashEntry.matcher).toBe("Bash");
 
     const managedHooks = bashEntry.hooks.filter(
-      (h: any) => h.__managed === "clauptain-hook",
+      (h: any) => h.__managed === "typed-claude-hooks",
     );
     expect(managedHooks).toHaveLength(1);
     expect(managedHooks[0].args).toEqual([
@@ -196,7 +196,7 @@ describe("mergeHooksIntoSettings", () => {
                 type: "command",
                 command: "node",
                 args: [".claude/hooks/preToolUse-oldHandler.cjs"],
-                __managed: "clauptain-hook",
+                __managed: "typed-claude-hooks",
               },
             ],
           },

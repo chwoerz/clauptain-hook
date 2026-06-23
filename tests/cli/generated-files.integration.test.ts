@@ -15,7 +15,7 @@ const TMP_DIR = resolve(
 const SNAPSHOT_DIR = resolve(import.meta.dirname, "__snapshots__/generated");
 const SETTINGS_PATH = resolve(TMP_DIR, "settings.json");
 const HOOKS_DIR = resolve(TMP_DIR, "hooks");
-const MANAGED_DIR = resolve(HOOKS_DIR, "clauptain-hook");
+const MANAGED_DIR = resolve(HOOKS_DIR, "typed-claude-hooks");
 
 function stabilize(content: string): string {
   return content

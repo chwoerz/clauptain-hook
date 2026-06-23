@@ -17,7 +17,7 @@ const FIXTURE_CONFIG = resolve(
 const TMP_DIR = resolve(import.meta.dirname, "../fixtures/.tmp-integration");
 const SETTINGS_PATH = resolve(TMP_DIR, "settings.json");
 const HOOKS_DIR = resolve(TMP_DIR, "hooks");
-const MANAGED_DIR = resolve(HOOKS_DIR, "clauptain-hook");
+const MANAGED_DIR = resolve(HOOKS_DIR, "typed-claude-hooks");
 
 describe("build command", () => {
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe("build command", () => {
     expect(settings.hooks.PreToolUse).toHaveLength(1);
     expect(settings.hooks.PreToolUse[0].matcher).toBe("Bash");
     expect(settings.hooks.PreToolUse[0].hooks[0].__managed).toBe(
-      "clauptain-hook",
+      "typed-claude-hooks",
     );
     expect(settings.hooks.Stop).toHaveLength(1);
   });

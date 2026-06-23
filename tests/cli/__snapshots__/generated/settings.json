@@ -9,9 +9,9 @@
             "type": "command",
             "command": "node",
             "args": [
-              "hooks/clauptain-hook/preToolUse-blockDangerous.cjs"
+              "hooks/typed-claude-hooks/preToolUse-blockDangerous.cjs"
             ],
-            "__managed": "clauptain-hook"
+            "__managed": "typed-claude-hooks"
           }
         ]
       }
@@ -23,9 +23,9 @@
             "type": "command",
             "command": "node",
             "args": [
-              "hooks/clauptain-hook/stop-onStop.cjs"
+              "hooks/typed-claude-hooks/stop-onStop.cjs"
             ],
-            "__managed": "clauptain-hook"
+            "__managed": "typed-claude-hooks"
           }
         ]
       }

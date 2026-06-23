@@ -1,4 +1,4 @@
-# clauptain-hook
+# typed-claude-hooks
 
 Type-safe hooks for Claude Code. All 30 events. Full autocomplete. One build command.
 
@@ -20,14 +20,13 @@ if (input.tool_input.comand.includes('rm -rf')) {
 ## The Fix
 
 ```ts
-import { defineHandler } from "clauptain-hook"
+import { defineHandler } from "typed-claude-hooks"
 
 export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (input) => {
   // input.tool_input is fully typed — autocomplete for command, timeout, description
   if (input.tool_input.command.includes("rm -rf")) {
     return {
       hookSpecificOutput: {
-        hookEventName: "PreToolUse" as const,
         permissionDecision: "deny" as const,
         permissionDecisionReason: "No rm -rf allowed",
       },
@@ -45,14 +44,14 @@ export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (i
 ## Quick Start
 
 ```bash
-npm install -D clauptain-hook
-npx clauptain-hook init
+npm install -D typed-claude-hooks
+npx typed-claude-hooks init
 ```
 
 This creates a `hooks.config.ts` with an example hook. Edit it, then build:
 
 ```bash
-npx clauptain-hook build -o .claude/settings.json
+npx typed-claude-hooks build -o .claude/settings.json
 ```
 
 Done. Your hooks are compiled and ready.
@@ -62,14 +61,13 @@ Done. Your hooks are compiled and ready.
 Export handlers as named exports — each is automatically discovered by its event type:
 
 ```ts
-import { defineHandler } from "clauptain-hook"
+import { defineHandler } from "typed-claude-hooks"
 
 // Matcher narrows tool_input to FileWriteInput | FileEditInput
 export const protectEnv = defineHandler("PreToolUse", { matcher: "Write|Edit" }, async (input) => {
   if (input.tool_input.file_path.endsWith(".env")) {
     return {
       hookSpecificOutput: {
-        hookEventName: "PreToolUse" as const,
         permissionDecision: "deny" as const,
         permissionDecisionReason: "Cannot modify .env files",
       },
@@ -114,7 +112,7 @@ Supported tools: `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`, `WebFetch`, `W
 Use `testHandler` to unit test your handlers without stdin/stdout or process spawning:
 
 ```ts
-import { testHandler } from "clauptain-hook/testing"
+import { testHandler } from "typed-claude-hooks/testing"
 import { protectEnv } from "./hooks.config"
 
 const result = await testHandler(protectEnv, {
@@ -130,7 +128,7 @@ expect(result.hookSpecificOutput?.permissionDecision).toBe("deny")
 
 ## CLI
 
-### `clauptain-hook build [config] -o <target>`
+### `typed-claude-hooks build [config] -o <target>`
 
 Compiles hooks and merges them into the target `settings.json`.
 
@@ -142,38 +140,38 @@ Compiles hooks and merges them into the target `settings.json`.
 | `--dry-run`    | `false`                 | Print what would be written            |
 | `--clean`      | `false`                 | Remove generated files before building |
 
-### `clauptain-hook validate [config]`
+### `typed-claude-hooks validate [config]`
 
 Loads and validates a config without building. Reports the handlers found or any errors.
 
-### `clauptain-hook init`
+### `typed-claude-hooks init`
 
 Scaffolds a starter `hooks.config.ts` and `tsconfig.json`.
 
 ## How It Works
 
-`clauptain-hook build` does four things:
+`typed-claude-hooks build` does four things:
 
 1. **Transpiles** your `.ts` config with esbuild and imports it
 2. **Bundles** each handler into a self-contained `.cjs` file that reads JSON from stdin, calls your handler, and writes JSON to stdout
 3. **Merges** hook entries into `settings.json`, preserving any hand-written hooks
 
-Generated hook entries are marked with `"__managed": "clauptain-hook"` so they can be cleanly replaced on rebuild without touching your manual hooks.
+Generated hook entries are marked with `"__managed": "typed-claude-hooks"` so they can be cleanly replaced on rebuild without touching your manual hooks.
 
 ## Local Development
 
-When working on clauptain-hook itself, build and run the CLI from the repo:
+When working on typed-claude-hooks itself, build and run the CLI from the repo:
 
 ```bash
 npm run build
 node dist/cli/index.js build -o .claude/settings.json
 ```
 
-Or use `npm link` to make the `clauptain-hook` command available globally:
+Or use `npm link` to make the `typed-claude-hooks` command available globally:
 
 ```bash
 npm link
-clauptain-hook build -o .claude/settings.json
+typed-claude-hooks build -o .claude/settings.json
 ```
 
 ## Types
@@ -186,10 +184,10 @@ import type {
   PreToolUseHookInput,
   StopHookInput,
   SyncHookJSONOutput,
-} from "clauptain-hook/types"
+} from "typed-claude-hooks/types"
 ```
 
-Types are auto-extracted from the `@anthropic-ai/claude-agent-sdk` package and bundled with clauptain-hook — no extra dependencies needed.
+Types are auto-extracted from the `@anthropic-ai/claude-agent-sdk` package and bundled with typed-claude-hooks — no extra dependencies needed.
 
 ## License
 

@@ -16,7 +16,7 @@ import {
 } from "../compiler/bundle-handlers.js";
 import { mergeHooksIntoSettings } from "../compiler/merge-hooks.js";
 
-const MANAGED_SUBDIR = "clauptain-hook";
+const MANAGED_SUBDIR = "typed-claude-hooks";
 
 function removeStaleFiles(
   managedDir: string,

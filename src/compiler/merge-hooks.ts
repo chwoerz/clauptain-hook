@@ -19,7 +19,7 @@ interface HookCommandEntry {
   once?: boolean;
   async?: boolean;
   asyncRewake?: boolean;
-  __managed: "clauptain-hook";
+  __managed: "typed-claude-hooks";
 }
 
 interface MatcherEntry {
@@ -37,7 +37,7 @@ function createHookCommandEntry(
     command: "node" as const,
     args: [relative(projectRoot, filePath)],
     ...hookOptions,
-    __managed: "clauptain-hook" as const,
+    __managed: "typed-claude-hooks" as const,
   });
 }
 
@@ -64,7 +64,7 @@ function buildHookEntries(
 }
 
 function isManagedHook(hook: any): boolean {
-  return hook.__managed === "clauptain-hook";
+  return hook.__managed === "typed-claude-hooks";
 }
 
 function matcherKey(entry: any): string | undefined {

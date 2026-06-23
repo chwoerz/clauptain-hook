@@ -16,7 +16,7 @@ function run(fn: (...args: any[]) => Promise<void>): (...args: any[]) => void {
 const program = new Command();
 
 program
-  .name("clauptain-hook")
+  .name("typed-claude-hooks")
   .description("Type-safe Claude Code hooks in TypeScript")
   .version("0.1.0");
 

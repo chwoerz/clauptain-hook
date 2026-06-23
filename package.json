@@ -1,12 +1,12 @@
 {
-  "name": "clauptain-hook",
+  "name": "typed-claude-hooks",
   "version": "0.1.0",
   "description": "Type-safe Claude Code hooks in TypeScript",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "clauptain-hook": "./dist/cli/index.js"
+    "typed-claude-hooks": "./dist/cli/index.js"
   },
   "exports": {
     ".": {

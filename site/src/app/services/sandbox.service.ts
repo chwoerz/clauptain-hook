@@ -106,10 +106,6 @@ export class SandboxService {
       try {
         const output = await hook.handler(input as any);
         const result = output ?? {};
-        const hso = result.hookSpecificOutput;
-        if (hso && !hso.hookEventName) {
-          hso.hookEventName = hook.event;
-        }
         results.push({
           handlerName,
           output: result,

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { build } from "./build.js";
-import { validate } from "./validate.js";
 import { init } from "./init.js";
 
 function run(fn: (...args: any[]) => Promise<void>): (...args: any[]) => void {
@@ -39,12 +38,6 @@ program
       }),
     ),
   );
-
-program
-  .command("validate")
-  .description("Validate a hooks config without building")
-  .argument("[config]", "Path to config file", "hooks.config.ts")
-  .action(run((config: string) => validate({ config })));
 
 program
   .command("init")

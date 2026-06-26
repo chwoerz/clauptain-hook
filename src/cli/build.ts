@@ -111,7 +111,7 @@ function printBuildSummary(
     const names = files.map((f) => f.name).join(", ");
     console.log(`  → ${event}: ${names}`);
   }
-  if (removedCount > 0) {
+  if (removedCount) {
     console.log(`✓ Removed ${removedCount} stale hook(s)`);
   }
 }

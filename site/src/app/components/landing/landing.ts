@@ -19,15 +19,14 @@ export class LandingComponent {
   }
 
   readonly heroRawCode = [
-    `<span class="cm">#!/usr/bin/env node</span>`,
-    `<span class="kw">const</span> <span class="pr">data</span> = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>);`,
-    `<span class="kw">const</span> <span class="pr">input</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="pr">data</span>);`,
+    `<span class="cm">#!/usr/bin/env bash</span>`,
+    `<span class="pr">INPUT</span>=<span class="str">$(cat)</span>`,
+    `<span class="pr">CMD</span>=<span class="str">$(echo "$INPUT" | jq -r '.tool_input.comand')</span>`,
+    `<span class="runtime-error-output">↑ comand vs command typo → null → rm -rf executes</span>`,
     ``,
-    `<span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr raw-typo">comand</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
-    `  <span class="pr">process</span>.<span class="pr">stdout</span>.<span class="fn">write</span>(`,
-    `    <span class="fn">JSON</span>.<span class="fn">stringify</span>({ <span class="pr">decision</span>: <span class="str">'deny'</span> })`,
-    `  );`,
-    `}`,
+    `<span class="kw">if</span> <span class="fn">echo</span> <span class="str">"$CMD"</span> | <span class="fn">grep</span> <span class="str">-q</span> <span class="str">"rm -rf"</span>; <span class="kw">then</span>`,
+    `  <span class="fn">echo</span> <span class="str">'{"decision":"deny"}'</span>`,
+    `<span class="kw">fi</span>`,
   ].join('\n');
 
   readonly heroTypedCode = [
@@ -35,9 +34,7 @@ export class LandingComponent {
     `  <span class="str">"PreToolUse"</span>,`,
     `  { <span class="pr">matcher</span>: <span class="str">"Bash"</span> },`,
     `  (<span class="pr">input</span>) =&gt; {`,
-    `    <span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="ide-anchor"><span class="ide-cursor"></span><span class="ide-autocomplete"><span class="ide-ac-row selected"><span class="ide-ac-icon"></span><span class="ide-ac-label">command</span><span class="ide-ac-type">string</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">timeout</span><span class="ide-ac-type">number</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">description</span><span class="ide-ac-type">string</span></span></span></span>`,
-    ``,
-    `    <span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr">command</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
+    `    <span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="ide-anchor"><span class="ide-cursor"></span><span class="ide-autocomplete"><span class="ide-ac-row selected"><span class="ide-ac-icon"></span><span class="ide-ac-label">command</span><span class="ide-ac-type">string</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">timeout</span><span class="ide-ac-type">number</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">description</span><span class="ide-ac-type">string</span></span></span></span>) {`,
     `      <span class="kw">return</span> { <span class="pr">decision</span>: <span class="str">'deny'</span> };`,
     `    }`,
     `  }`,
@@ -45,38 +42,35 @@ export class LandingComponent {
   ].join('\n');
 
   readonly rawTypeSafety = [
-    `<span class="cm">#!/usr/bin/env node</span>`,
-    `<span class="kw">const</span> <span class="pr">data</span> = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>);`,
-    `<span class="kw">const</span> <span class="pr">input</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="pr">data</span>);`,
+    `<span class="cm">#!/usr/bin/env bash</span>`,
+    `<span class="pr">INPUT</span>=<span class="str">$(cat)</span>`,
+    `<span class="pr">CMD</span>=<span class="str">$(echo "$INPUT" | jq -r '.tool_input.comand')</span>`,
+    `<span class="runtime-error-output">↑ typo → null → rm -rf executes</span>`,
     ``,
-    `<span class="cm">// no types — typo in field name? silent bug</span>`,
-    `<span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr raw-typo">comand</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
-    `  <span class="pr">process</span>.<span class="pr">stdout</span>.<span class="fn">write</span>(`,
-    `    <span class="fn">JSON</span>.<span class="fn">stringify</span>({ <span class="pr">decision</span>: <span class="str">'deny'</span> })`,
-    `  );`,
-    `}`,
+    `<span class="kw">if</span> <span class="fn">echo</span> <span class="str">"$CMD"</span> | <span class="fn">grep</span> <span class="str">-q</span> <span class="str">"rm -rf"</span>; <span class="kw">then</span>`,
+    `  <span class="fn">echo</span> <span class="str">'{"decision":"deny"}'</span>`,
+    `<span class="kw">fi</span>`,
   ].join('\n');
 
   readonly rawNarrowing = [
-    `<span class="cm">#!/usr/bin/env node</span>`,
-    `<span class="kw">const</span> <span class="pr">data</span> = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>);`,
-    `<span class="kw">const</span> <span class="pr">input</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="pr">data</span>);`,
-    `<span class="kw">const</span> <span class="pr">path</span> = <span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr">file_path</span>  <span class="cm">// hope it exists?</span>`,
-    `<span class="kw">const</span> <span class="pr">content</span> = <span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr">content</span> <span class="cm">// string? object?</span>`,
+    `<span class="cm">#!/usr/bin/env bash</span>`,
+    `<span class="pr">INPUT</span>=<span class="str">$(cat)</span>`,
+    `<span class="pr">PATH</span>=<span class="str">$(echo "$INPUT" | jq -r '.tool_input.file_path')</span>`,
+    `<span class="pr">CONTENT</span>=<span class="str">$(echo "$INPUT" | jq -r '.tool_input.content')</span>`,
+    ``,
+    `<span class="cm"># is file_path a string? is content an object?</span>`,
+    `<span class="cm"># no way to know — just hope for the best.</span>`,
   ].join('\n');
 
   readonly rawTesting = [
-    `<span class="kw">const</span> { <span class="pr">execSync</span> } = <span class="fn">require</span>(<span class="str">'child_process'</span>);`,
+    `<span class="cm">#!/usr/bin/env bash</span>`,
+    `<span class="cm"># "testing" a bash hook</span>`,
+    `<span class="fn">echo</span> <span class="str">'{"tool_input":{"command":"rm -rf /"}}'</span> \\`,
+    `  | <span class="fn">bash</span> <span class="str">./hooks/block-rm.sh</span>`,
     ``,
-    `<span class="fn">it</span>(<span class="str">'blocks rm -rf'</span>, () =&gt; {`,
-    `  <span class="kw">const</span> <span class="pr">out</span> = <span class="fn">execSync</span>(`,
-    `    <span class="str">'echo \\'{\"tool_input\":{\"command\":\"rm -rf /\"}}\\'</span>`,
-    `    <span class="str">  | node ./hooks/block-rm.js'</span>`,
-    `  );`,
-    `  <span class="fn">expect</span>(<span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="pr">out</span>)).<span class="fn">toEqual</span>(`,
-    `    { <span class="pr">decision</span>: <span class="str">'deny'</span> }`,
-    `  );`,
-    `});`,
+    `<span class="cm"># check output manually...</span>`,
+    `<span class="cm"># {"decision":"deny"} ?</span>`,
+    `<span class="cm"># no assertions, no types, no confidence.</span>`,
   ].join('\n');
 
   readonly rawSettingsGen = [
@@ -87,7 +81,7 @@ export class LandingComponent {
     `      <span class="pr">"matcher"</span>: <span class="str">"Bash"</span>,`,
     `      <span class="pr">"hooks"</span>: [{`,
     `        <span class="pr">"type"</span>: <span class="str">"command"</span>,`,
-    `        <span class="pr">"command"</span>: <span class="str">"cat | node ./hooks/block-rm.js"</span>`,
+    `        <span class="pr">"command"</span>: <span class="str">"cat | bash ./hooks/block-rm.sh"</span>`,
     `      }]`,
     `    }]`,
     `  }`,
@@ -99,9 +93,7 @@ export class LandingComponent {
     `  <span class="str">"PreToolUse"</span>,`,
     `  { <span class="pr">matcher</span>: <span class="str">"Bash"</span> },`,
     `  (<span class="pr">input</span>) =&gt; {`,
-    `    <span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="ide-anchor"><span class="ide-cursor"></span><span class="ide-autocomplete"><span class="ide-ac-row selected"><span class="ide-ac-icon"></span><span class="ide-ac-label">command</span><span class="ide-ac-type">string</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">timeout</span><span class="ide-ac-type">number</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">description</span><span class="ide-ac-type">string</span></span></span></span>`,
-    ``,
-    `    <span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="pr">command</span>.<span class="fn">includes</span>(<span class="str">'rm -rf'</span>)) {`,
+    `    <span class="kw">if</span> (<span class="pr">input</span>.<span class="pr">tool_input</span>.<span class="ide-anchor"><span class="ide-cursor"></span><span class="ide-autocomplete"><span class="ide-ac-row selected"><span class="ide-ac-icon"></span><span class="ide-ac-label">command</span><span class="ide-ac-type">string</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">timeout</span><span class="ide-ac-type">number</span></span><span class="ide-ac-row"><span class="ide-ac-icon"></span><span class="ide-ac-label">description</span><span class="ide-ac-type">string</span></span></span></span>) {`,
     `      <span class="kw">return</span> { <span class="pr">decision</span>: <span class="str">'deny'</span> };`,
     `    }`,
     `  }`,
@@ -126,7 +118,7 @@ export class LandingComponent {
     ``,
     `<span class="fn">it</span>(<span class="str">'blocks rm -rf'</span>, <span class="kw">async</span> () =&gt; {`,
     `  <span class="kw">const</span> <span class="pr">result</span><span class="ide-inlay">: PreToolUseOutput</span> = <span class="kw">await</span> <span class="fn">testHandler</span>(<span class="pr">handler</span>, {`,
-    `    <span class="pr ide-anchor">command<span class="ide-tooltip"><span class="ide-tt-line"><span class="ide-tt-dim">(property)</span> <span class="pr">command</span>: <span class="ty">string</span></span></span></span>: <span class="str">'rm -rf /'</span>,`,
+    `    <span class="pr">command</span>: <span class="str">'rm -rf /'</span>,`,
     `  });`,
     `  <span class="fn">expect</span>(<span class="pr">result</span>.<span class="pr">decision</span>).<span class="fn">toBe</span>(<span class="str">'deny'</span>);`,
     `});`,

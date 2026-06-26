@@ -12,7 +12,7 @@
 The public API is `defineHandler` only — there is no `defineHooks`. Config files export handlers as named exports; the compiler auto-collects them by their `event` field. No default export is needed.
 
 ```ts
-import { defineHandler } from "clauptain-hook"
+import { defineHandler } from "typed-claude-hooks"
 
 export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (input) => {
   // ...

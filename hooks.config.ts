@@ -7,6 +7,7 @@ export const protectGeneratedFiles = defineHandler(
     if (input.tool_input.file_path.includes("/generated/")) {
       return {
         hookSpecificOutput: {
+          hookEventName: "PreToolUse",
           permissionDecision: "deny",
           permissionDecisionReason: "Cannot modify generated files",
         },

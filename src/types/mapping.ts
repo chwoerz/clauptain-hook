@@ -129,7 +129,7 @@ type ResolveToolInput<Name extends string> = Name extends keyof ToolInputMap
   ? ToolInputMap[Name]
   : unknown;
 
-type ToolHookEvent = "PreToolUse" | "PostToolUse";
+export type ToolHookEvent = "PreToolUse" | "PostToolUse";
 
 export type NarrowedToolInput<
   E extends ToolHookEvent,

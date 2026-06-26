@@ -4,11 +4,10 @@ import type {
   HookInputFor,
   HookOutputFor,
   NarrowedToolInput,
+  ToolHookEvent,
   TypedHandler,
 } from "../types/mapping.js";
 import { clearUndefineds } from "../utils.js";
-
-type ToolHookEvent = "PreToolUse" | "PostToolUse";
 
 export function defineHandler<E extends ToolHookEvent, M extends string>(
   event: E,

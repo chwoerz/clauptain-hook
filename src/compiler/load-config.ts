@@ -37,7 +37,7 @@ export async function loadConfig(configPath: string): Promise<LoadedConfig> {
   const absPath = resolve(configPath);
   const tmpDir = resolve(
     dirname(absPath),
-    `.clauptain-tmp-${randomUUID().slice(0, 8)}`,
+    `.typed-claude-hooks-tmp-${randomUUID().slice(0, 8)}`,
   );
   const tmpFile = resolve(tmpDir, "config.mjs");
 

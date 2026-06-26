@@ -18,9 +18,7 @@ const HOOKS_DIR = resolve(TMP_DIR, "hooks");
 const MANAGED_DIR = resolve(HOOKS_DIR, "typed-claude-hooks");
 
 function stabilize(content: string): string {
-  return content
-    .replace(/\/\/ .*\.tmp-[a-f0-9]+\/.+/g, "// <entry>")
-    .replace(/\/\/ tests\/fixtures\/.+/g, "// <fixture>");
+  return content.replace(/\/\/ tests\/fixtures\/.+/g, "// <fixture>");
 }
 
 describe("generated files", () => {

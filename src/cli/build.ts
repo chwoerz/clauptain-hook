@@ -47,6 +47,18 @@ export interface BuildOptions {
   clean?: boolean;
 }
 
+function loadExistingSettings(settingsPath: any) {
+  let existingSettings: Record<string, any> = {};
+  if (existsSync(settingsPath)) {
+    try {
+      existingSettings = JSON.parse(readFileSync(settingsPath, "utf-8"));
+    } catch {
+      throw new Error(`Failed to parse ${settingsPath} — is it valid JSON?`);
+    }
+  }
+  return existingSettings;
+}
+
 export async function build(options: BuildOptions): Promise<void> {
   const configPath = resolve(options.config);
   const settingsPath = resolve(options.output);
@@ -75,9 +87,7 @@ export async function build(options: BuildOptions): Promise<void> {
 
   const removedCount = removeStaleFiles(managedDir, bundledFiles);
 
-  const existingSettings: Record<string, any> = existsSync(settingsPath)
-    ? JSON.parse(readFileSync(settingsPath, "utf-8"))
-    : {};
+  const existingSettings = loadExistingSettings(settingsPath);
 
   const merged = mergeHooksIntoSettings({
     existingSettings,

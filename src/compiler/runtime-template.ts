@@ -14,7 +14,7 @@ process.stdin.on("end", function() {
       process.exit(0);
     })
     .catch(function(err) {
-      process.stderr.write(String(err && err.message ? err.message : err));
+      process.stderr.write(err && err.stack ? err.stack : String(err));
       process.exit(2);
     });
 });

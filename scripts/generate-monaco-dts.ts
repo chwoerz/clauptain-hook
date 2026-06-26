@@ -61,12 +61,12 @@ const dtsBody = [
   .map((line) => (line.trim() === "" ? "" : `  ${line}`))
   .join("\n");
 
-const dtsContent = `declare module "clauptain-hook" {\n${dtsBody}\n}`;
+const dtsContent = `declare module "typed-claude-hooks" {\n${dtsBody}\n}`;
 
 const output = `// Auto-generated from src/types — do not edit manually
 // Regenerate with: npm run generate-monaco-dts
 
-export const CLAUPTAIN_HOOK_DTS = ${JSON.stringify(dtsContent)};
+export const TYPED_CLAUDE_HOOKS_DTS = ${JSON.stringify(dtsContent)};
 `;
 
 writeFileSync(OUTPUT, output);

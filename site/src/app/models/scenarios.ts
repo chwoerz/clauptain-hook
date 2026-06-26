@@ -25,6 +25,7 @@ export const blockRm = defineHandler("PreToolUse", { matcher: "Bash" }, async (i
   if (input.tool_input.command.includes("rm ")) {
     return {
       hookSpecificOutput: {
+        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "No rm allowed, ye scurvy dog!",
       },
@@ -75,6 +76,7 @@ export const protectEnv = defineHandler("PreToolUse", { matcher: "Write" }, asyn
   if (input.tool_input.file_path.endsWith(".env")) {
     return {
       hookSpecificOutput: {
+        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "The treasure map (.env) is sacred!",
       },
@@ -145,8 +147,7 @@ export const captainsLog = defineHandler("PostToolUse", { matcher: "Bash" }, asy
           cwd: '/project',
           duration_ms: 85,
         },
-        expectedContext:
-          "Command executed successfully. Remember to check for side effects.",
+        expectedContext: 'Command executed successfully. Remember to check for side effects.',
       },
     ],
   },

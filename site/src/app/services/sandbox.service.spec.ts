@@ -59,6 +59,7 @@ describe('SandboxService', () => {
         if (input.tool_input.command.includes("rm ")) {
           return {
             hookSpecificOutput: {
+              hookEventName: 'PreToolUse'
               permissionDecision: "deny",
               permissionDecisionReason: "blocked",
             },

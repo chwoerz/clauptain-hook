@@ -2,26 +2,13 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": [
-              ".claude/hooks/clauptain-hook/preToolUse-protectGeneratedFiles.cjs"
-            ],
-            "__managed": "clauptain-hook"
-          }
-        ]
-      },
-      {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
             "command": "node",
             "args": [
-              ".claude/hooks/typed-claude-hooks/typed-claude-hooks/preToolUse-blockDangerous.cjs"
+              ".claude/hooks/typed-claude-hooks/preToolUse-blockDangerous.cjs"
             ],
             "__managed": "typed-claude-hooks"
           }
@@ -35,7 +22,7 @@
             "type": "command",
             "command": "node",
             "args": [
-              ".claude/hooks/typed-claude-hooks/typed-claude-hooks/stop-onStop.cjs"
+              ".claude/hooks/typed-claude-hooks/stop-onStop.cjs"
             ],
             "__managed": "typed-claude-hooks"
           }

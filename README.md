@@ -140,10 +140,6 @@ Compiles hooks and merges them into the target `settings.json`.
 | `--dry-run`    | `false`                 | Print what would be written            |
 | `--clean`      | `false`                 | Remove generated files before building |
 
-### `typed-claude-hooks validate [config]`
-
-Loads and validates a config without building. Reports the handlers found or any errors.
-
 ### `typed-claude-hooks init`
 
 Scaffolds a starter `hooks.config.ts` and `tsconfig.json`.

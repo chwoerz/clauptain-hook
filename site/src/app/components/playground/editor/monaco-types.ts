@@ -9,6 +9,7 @@ export const blockRm = defineHandler("PreToolUse",
   if (input.tool_input.command.includes("rm ")) {
     return {
       hookSpecificOutput: {
+        hookEventName: "PreToolUse",
         permissionDecision: "deny",
         permissionDecisionReason: "rm commands are not allowed",
       },

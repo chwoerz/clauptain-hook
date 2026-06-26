@@ -20,7 +20,6 @@ describe("extractHandlers", () => {
 
     expect(preToolUse).toEqual({
       event: "PreToolUse",
-      handlerIndex: 0,
       name: "blockDangerous",
       matcher: "Bash",
       timeout: undefined,
@@ -33,7 +32,6 @@ describe("extractHandlers", () => {
     });
     expect(stop).toEqual({
       event: "Stop",
-      handlerIndex: 0,
       name: "onStop",
       matcher: undefined,
       timeout: undefined,

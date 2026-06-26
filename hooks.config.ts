@@ -1,18 +1,13 @@
 import { defineHandler } from "typed-claude-hooks";
 
-export const protectGeneratedFiles = defineHandler(
+export const blockDangerous = defineHandler(
   "PreToolUse",
-  { matcher: "Write" },
+  { matcher: "Bash" },
   async (input) => {
-    if (input.tool_input.file_path.includes("/generated/")) {
-      return {
-        hookSpecificOutput: {
-          hookEventName: "PreToolUse",
-          permissionDecision: "deny",
-          permissionDecisionReason: "Cannot modify generated files",
-        },
-      };
-    }
     return {};
   },
 );
+
+export const onStop = defineHandler("Stop", async (input) => {
+  return {};
+});

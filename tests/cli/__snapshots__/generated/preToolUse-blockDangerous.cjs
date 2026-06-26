@@ -22,16 +22,17 @@ function defineHandler(event, ...rest) {
 }
 
 // <fixture>
-var blockDangerous = defineHandler(
+var blockDangerous = /* @__PURE__ */ defineHandler(
   "PreToolUse",
   { matcher: "Bash" },
   async (input) => {
+    const u = aHelper();
     return {};
   }
 );
-var onStop = defineHandler("Stop", async (input) => {
-  return {};
-});
+function aHelper() {
+  return "asdf";
+}
 
 // <stdin>
 var __handler = blockDangerous.handler;

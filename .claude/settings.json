@@ -13,6 +13,33 @@
             "__managed": "clauptain-hook"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              ".claude/hooks/typed-claude-hooks/typed-claude-hooks/preToolUse-blockDangerous.cjs"
+            ],
+            "__managed": "typed-claude-hooks"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              ".claude/hooks/typed-claude-hooks/typed-claude-hooks/stop-onStop.cjs"
+            ],
+            "__managed": "typed-claude-hooks"
+          }
+        ]
       }
     ]
   }

@@ -34,8 +34,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: {},
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -55,8 +53,6 @@ describe("mergeHooksIntoSettings", () => {
         statusLine: { type: "command" },
       },
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -89,8 +85,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: existing,
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -126,8 +120,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: existing,
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -164,8 +156,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: existing,
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -222,8 +212,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: existing,
       bundledFiles: noWriteHandlers,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -252,8 +240,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: {},
       bundledFiles: filesWithTimeout,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -264,8 +250,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: {},
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 
@@ -276,8 +260,6 @@ describe("mergeHooksIntoSettings", () => {
     const result = mergeHooksIntoSettings({
       existingSettings: {},
       bundledFiles,
-      hooksDir: "/project/.claude/hooks",
-      settingsPath: "/project/.claude/settings.json",
       projectRoot: "/project",
     });
 

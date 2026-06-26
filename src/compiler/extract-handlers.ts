@@ -3,7 +3,6 @@ import type { LoadedConfig } from "./load-config.js";
 
 export interface HandlerEntry extends HandlerOptions {
   event: string;
-  handlerIndex: number;
   name: string;
 }
 
@@ -14,9 +13,9 @@ export function extractHandlers(loaded: LoadedConfig): HandlerEntry[] {
   );
 
   return [...byEvent.entries()].flatMap(([event, entries]) =>
-    entries.map(([name, handler], hi) => {
+    entries.map(([name, handler]) => {
       const { event: _event, handler: _handler, ...options } = handler;
-      return { ...options, event, handlerIndex: hi, name };
+      return { ...options, event, name };
     }),
   );
 }

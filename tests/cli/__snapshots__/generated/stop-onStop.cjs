@@ -12,50 +12,37 @@ function clearUndefineds(obj) {
 
 // src/authoring/define-handler.ts
 function defineHandler(event, ...rest) {
-  const options =
-    typeof rest[0] === "object" && rest[0] !== null && !Array.isArray(rest[0])
-      ? rest.shift()
-      : void 0;
+  const options = typeof rest[0] === "object" && rest[0] !== null && !Array.isArray(rest[0]) ? rest.shift() : void 0;
   const handler = rest[0];
   return clearUndefineds({
     ...options,
     event,
-    handler,
+    handler
   });
 }
 
 // <fixture>
-var blockDangerous = defineHandler(
-  "PreToolUse",
-  { matcher: "Bash" },
-  async (input) => {
-    return {};
-  },
-);
-var onStop = defineHandler("Stop", async (input) => {
+var onStop = /* @__PURE__ */ defineHandler("Stop", async (input) => {
   return {};
 });
 
 // <stdin>
-var __handler = blockDangerous.handler;
+var __handler = onStop.handler;
 var __stdin = "";
 process.stdin.setEncoding("utf8");
-process.stdin.on("data", function (chunk) {
+process.stdin.on("data", function(chunk) {
   __stdin += chunk;
 });
-process.stdin.on("end", function () {
-  Promise.resolve()
-    .then(function () {
-      return __handler(JSON.parse(__stdin));
-    })
-    .then(function (result) {
-      if (result && Object.keys(result).length > 0) {
-        process.stdout.write(JSON.stringify(result));
-      }
-      process.exit(0);
-    })
-    .catch(function (err) {
-      process.stderr.write(String(err && err.message ? err.message : err));
-      process.exit(2);
-    });
+process.stdin.on("end", function() {
+  Promise.resolve().then(function() {
+    return __handler(JSON.parse(__stdin));
+  }).then(function(result) {
+    if (result && Object.keys(result).length > 0) {
+      process.stdout.write(JSON.stringify(result));
+    }
+    process.exit(0);
+  }).catch(function(err) {
+    process.stderr.write(String(err && err.message ? err.message : err));
+    process.exit(2);
+  });
 });

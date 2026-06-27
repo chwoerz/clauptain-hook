@@ -20,23 +20,51 @@ const MANAGED_SUBDIR = "typed-claude-hooks";
 
 function removeStaleFiles(
   managedDir: string,
-  bundledFiles: { fileName: string }[],
+  bundledFiles: BundledFile[],
 ): number {
   if (!existsSync(managedDir)) return 0;
 
-  const generatedNames = new Set(bundledFiles.map((f) => f.fileName));
-  const staleFiles = readdirSync(managedDir, { withFileTypes: true }).filter(
-    (entry) =>
-      entry.isFile() &&
-      entry.name.endsWith(".cjs") &&
-      !generatedNames.has(entry.name),
+  const expectedPaths = new Set(
+    bundledFiles.flatMap((f) => [
+      resolve(managedDir, f.event, f.fileName),
+      resolve(managedDir, f.event, f.fileName.replace(/\.cjs$/, ".sh")),
+    ]),
   );
 
-  for (const entry of staleFiles) {
-    unlinkSync(resolve(managedDir, entry.name));
+  let removedCount = 0;
+
+  for (const entry of readdirSync(managedDir, { withFileTypes: true })) {
+    const fullPath = resolve(managedDir, entry.name);
+
+    if (
+      entry.isFile() &&
+      (entry.name.endsWith(".cjs") || entry.name.endsWith(".sh"))
+    ) {
+      unlinkSync(fullPath);
+      removedCount++;
+      continue;
+    }
+
+    if (!entry.isDirectory()) continue;
+
+    for (const fileEntry of readdirSync(fullPath, { withFileTypes: true })) {
+      if (!fileEntry.isFile()) continue;
+      if (!fileEntry.name.endsWith(".cjs") && !fileEntry.name.endsWith(".sh"))
+        continue;
+
+      const filePath = resolve(fullPath, fileEntry.name);
+      if (!expectedPaths.has(filePath)) {
+        unlinkSync(filePath);
+        removedCount++;
+      }
+    }
+
+    if (readdirSync(fullPath).length === 0) {
+      rmSync(fullPath, { recursive: true });
+    }
   }
 
-  return staleFiles.length;
+  return removedCount;
 }
 
 export interface BuildOptions {

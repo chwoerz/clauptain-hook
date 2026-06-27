@@ -42,9 +42,13 @@ describe("build command", () => {
 
     expect(existsSync(resolve(MANAGED_DIR, "runtime.cjs"))).toBe(false);
     expect(
-      existsSync(resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs")),
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")),
     ).toBe(true);
-    expect(existsSync(resolve(MANAGED_DIR, "stop-onStop.cjs"))).toBe(true);
+    expect(existsSync(resolve(MANAGED_DIR, "Stop/onStop.cjs"))).toBe(true);
+    expect(
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh")),
+    ).toBe(true);
+    expect(existsSync(resolve(MANAGED_DIR, "Stop/onStop.sh"))).toBe(true);
 
     const settings = JSON.parse(readFileSync(SETTINGS_PATH, "utf-8"));
     expect(settings.model).toBe("claude-sonnet-4-6");
@@ -57,11 +61,10 @@ describe("build command", () => {
   });
 
   it("removes stale managed hook files", async () => {
-    mkdirSync(MANAGED_DIR, { recursive: true });
-    writeFileSync(
-      resolve(MANAGED_DIR, "preToolUse-oldHandler.cjs"),
-      "console.log('stale');",
-    );
+    const staleDir = resolve(MANAGED_DIR, "PreToolUse");
+    mkdirSync(staleDir, { recursive: true });
+    writeFileSync(resolve(staleDir, "oldHandler.cjs"), "console.log('stale');");
+    writeFileSync(resolve(staleDir, "oldHandler.sh"), "#!/bin/sh\necho stale");
     writeFileSync(
       resolve(HOOKS_DIR, "preToolUse-userManual.cjs"),
       "console.log('keep me');",
@@ -73,14 +76,16 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    expect(existsSync(resolve(MANAGED_DIR, "preToolUse-oldHandler.cjs"))).toBe(
-      false,
-    );
+    expect(existsSync(resolve(staleDir, "oldHandler.cjs"))).toBe(false);
+    expect(existsSync(resolve(staleDir, "oldHandler.sh"))).toBe(false);
     expect(existsSync(resolve(HOOKS_DIR, "preToolUse-userManual.cjs"))).toBe(
       true,
     );
     expect(
-      existsSync(resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs")),
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")),
+    ).toBe(true);
+    expect(
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh")),
     ).toBe(true);
   });
 
@@ -103,7 +108,7 @@ describe("build command", () => {
     });
 
     const result = execSync(
-      `echo '${stdinPayload}' | node ${resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs")}`,
+      `echo '${stdinPayload}' | node ${resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")}`,
       { encoding: "utf-8", cwd: MANAGED_DIR },
     );
 

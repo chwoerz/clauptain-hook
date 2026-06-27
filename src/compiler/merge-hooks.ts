@@ -10,8 +10,7 @@ export interface MergeOptions {
 
 interface HookCommandEntry {
   type: "command";
-  command: "node";
-  args: string[];
+  command: string;
   timeout?: number;
   if?: string;
   shell?: "bash" | "powershell";
@@ -32,10 +31,10 @@ function createHookCommandEntry(
   f: BundledFile,
 ): HookCommandEntry {
   const { fileName, filePath, event, name, matcher, ...hookOptions } = f;
+  const wrapperPath = filePath.replace(/\.cjs$/, ".sh");
   return clearUndefineds({
     type: "command" as const,
-    command: "node" as const,
-    args: [relative(projectRoot, filePath)],
+    command: relative(projectRoot, wrapperPath),
     ...hookOptions,
     __managed: "typed-claude-hooks" as const,
   });

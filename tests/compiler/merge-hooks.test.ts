@@ -5,8 +5,8 @@ import type { BundledFile } from "../../src/compiler/bundle-handlers.js";
 describe("mergeHooksIntoSettings", () => {
   const bundledFiles: BundledFile[] = [
     {
-      fileName: "preToolUse-blockDangerous.cjs",
-      filePath: "/project/.claude/hooks/preToolUse-blockDangerous.cjs",
+      fileName: "blockDangerous.cjs",
+      filePath: "/project/.claude/hooks/PreToolUse/blockDangerous.cjs",
       event: "PreToolUse",
       name: "blockDangerous",
       matcher: "Bash",
@@ -17,8 +17,8 @@ describe("mergeHooksIntoSettings", () => {
       asyncRewake: undefined,
     },
     {
-      fileName: "stop-onStop.cjs",
-      filePath: "/project/.claude/hooks/stop-onStop.cjs",
+      fileName: "onStop.cjs",
+      filePath: "/project/.claude/hooks/Stop/onStop.cjs",
       event: "Stop",
       name: "onStop",
       matcher: undefined,
@@ -39,7 +39,9 @@ describe("mergeHooksIntoSettings", () => {
 
     expect(result.hooks.PreToolUse).toHaveLength(1);
     expect(result.hooks.PreToolUse[0].matcher).toBe("Bash");
-    expect(result.hooks.PreToolUse[0].hooks[0].command).toBe("node");
+    expect(result.hooks.PreToolUse[0].hooks[0].command).toBe(
+      ".claude/hooks/PreToolUse/blockDangerous.sh",
+    );
     expect(result.hooks.PreToolUse[0].hooks[0].__managed).toBe(
       "typed-claude-hooks",
     );
@@ -166,9 +168,9 @@ describe("mergeHooksIntoSettings", () => {
       (h: any) => h.__managed === "typed-claude-hooks",
     );
     expect(managedHooks).toHaveLength(1);
-    expect(managedHooks[0].args).toEqual([
-      ".claude/hooks/preToolUse-blockDangerous.cjs",
-    ]);
+    expect(managedHooks[0].command).toBe(
+      ".claude/hooks/PreToolUse/blockDangerous.sh",
+    );
 
     const manualHooks = bashEntry.hooks.filter((h: any) => !h.__managed);
     expect(manualHooks).toHaveLength(1);
@@ -196,8 +198,8 @@ describe("mergeHooksIntoSettings", () => {
 
     const noWriteHandlers: BundledFile[] = [
       {
-        fileName: "preToolUse-blockDangerous.cjs",
-        filePath: "/project/.claude/hooks/preToolUse-blockDangerous.cjs",
+        fileName: "blockDangerous.cjs",
+        filePath: "/project/.claude/hooks/PreToolUse/blockDangerous.cjs",
         event: "PreToolUse",
         name: "blockDangerous",
         matcher: "Bash",
@@ -224,8 +226,8 @@ describe("mergeHooksIntoSettings", () => {
   it("includes timeout in hook entry when set", () => {
     const filesWithTimeout: BundledFile[] = [
       {
-        fileName: "stop-onStop.cjs",
-        filePath: "/project/.claude/hooks/stop-onStop.cjs",
+        fileName: "onStop.cjs",
+        filePath: "/project/.claude/hooks/Stop/onStop.cjs",
         event: "Stop",
         name: "onStop",
         matcher: undefined,
@@ -264,8 +266,9 @@ describe("mergeHooksIntoSettings", () => {
     });
 
     const hookEntry = result.hooks.PreToolUse[0].hooks[0];
-    expect(hookEntry.args).toEqual([
-      ".claude/hooks/preToolUse-blockDangerous.cjs",
-    ]);
+    expect(hookEntry.command).toBe(
+      ".claude/hooks/PreToolUse/blockDangerous.sh",
+    );
+    expect(hookEntry).not.toHaveProperty("args");
   });
 });

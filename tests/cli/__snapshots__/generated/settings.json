@@ -7,10 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": [
-              "hooks/typed-claude-hooks/preToolUse-blockDangerous.cjs"
-            ],
+            "command": "hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh",
             "__managed": "typed-claude-hooks"
           }
         ]
@@ -21,10 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": [
-              "hooks/typed-claude-hooks/stop-onStop.cjs"
-            ],
+            "command": "hooks/typed-claude-hooks/Stop/onStop.sh",
             "__managed": "typed-claude-hooks"
           }
         ]

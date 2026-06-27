@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { resolve } from "path";
-import { readFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
+import { readFileSync, mkdirSync, rmSync, writeFileSync, statSync } from "fs";
 import { execSync } from "child_process";
 import { build } from "../../src/cli/build.js";
 
@@ -42,23 +42,43 @@ describe("generated files", () => {
   });
 
   describe("file snapshots", () => {
-    it("preToolUse-blockDangerous.cjs", async () => {
+    it("PreToolUse/blockDangerous.cjs", async () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
-        resolve(SNAPSHOT_DIR, "preToolUse-blockDangerous.cjs"),
+        resolve(SNAPSHOT_DIR, "PreToolUse/blockDangerous.cjs"),
       );
     });
 
-    it("stop-onStop.cjs", async () => {
+    it("PreToolUse/blockDangerous.sh", async () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "stop-onStop.cjs"),
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh"),
+        "utf-8",
+      );
+      await expect(content).toMatchFileSnapshot(
+        resolve(SNAPSHOT_DIR, "PreToolUse/blockDangerous.sh"),
+      );
+    });
+
+    it("Stop/onStop.cjs", async () => {
+      const content = readFileSync(
+        resolve(MANAGED_DIR, "Stop/onStop.cjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
-        resolve(SNAPSHOT_DIR, "stop-onStop.cjs"),
+        resolve(SNAPSHOT_DIR, "Stop/onStop.cjs"),
+      );
+    });
+
+    it("Stop/onStop.sh", async () => {
+      const content = readFileSync(
+        resolve(MANAGED_DIR, "Stop/onStop.sh"),
+        "utf-8",
+      );
+      await expect(content).toMatchFileSnapshot(
+        resolve(SNAPSHOT_DIR, "Stop/onStop.sh"),
       );
     });
 
@@ -81,23 +101,30 @@ describe("generated files", () => {
 
   describe("structural checks", () => {
     it("handler bundles are syntactically valid Node.js", () => {
-      execSync(`node --check preToolUse-blockDangerous.cjs`, {
-        cwd: MANAGED_DIR,
+      execSync(`node --check blockDangerous.cjs`, {
+        cwd: resolve(MANAGED_DIR, "PreToolUse"),
         timeout: 5000,
       });
-      execSync(`node --check stop-onStop.cjs`, {
-        cwd: MANAGED_DIR,
+      execSync(`node --check onStop.cjs`, {
+        cwd: resolve(MANAGED_DIR, "Stop"),
         timeout: 5000,
       });
     });
 
     it("handler bundles are self-contained (no runtime.cjs)", () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "preToolUse-blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs"),
         "utf-8",
       );
       expect(content).toContain("process.stdin");
       expect(content).not.toContain('require("./runtime.cjs")');
+    });
+
+    it("wrapper scripts are executable", () => {
+      const mode = statSync(
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh"),
+      ).mode;
+      expect(mode & 0o111).toBeGreaterThan(0);
     });
   });
 
@@ -113,10 +140,28 @@ describe("generated files", () => {
         tool_use_id: "tu_1",
       });
 
-      const result = execSync(
-        `echo '${payload}' | node preToolUse-blockDangerous.cjs`,
-        { encoding: "utf-8", cwd: MANAGED_DIR },
-      );
+      const result = execSync(`echo '${payload}' | node blockDangerous.cjs`, {
+        encoding: "utf-8",
+        cwd: resolve(MANAGED_DIR, "PreToolUse"),
+      });
+      expect(result.trim()).toBe("");
+    });
+
+    it("PreToolUse wrapper script passes through safe commands", () => {
+      const payload = JSON.stringify({
+        session_id: "test",
+        transcript_path: "/tmp/test.jsonl",
+        cwd: "/tmp",
+        hook_event_name: "PreToolUse",
+        tool_name: "Bash",
+        tool_input: { command: "ls" },
+        tool_use_id: "tu_1",
+      });
+
+      const result = execSync(`echo '${payload}' | ./blockDangerous.sh`, {
+        encoding: "utf-8",
+        cwd: resolve(MANAGED_DIR, "PreToolUse"),
+      });
       expect(result.trim()).toBe("");
     });
 
@@ -129,9 +174,9 @@ describe("generated files", () => {
         stop_hook_active: false,
       });
 
-      const result = execSync(`echo '${payload}' | node stop-onStop.cjs`, {
+      const result = execSync(`echo '${payload}' | node onStop.cjs`, {
         encoding: "utf-8",
-        cwd: MANAGED_DIR,
+        cwd: resolve(MANAGED_DIR, "Stop"),
       });
       expect(result.trim()).toBe("");
     });

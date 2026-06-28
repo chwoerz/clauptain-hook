@@ -11,6 +11,7 @@ import { dirname, relative, resolve } from "node:path";
 import {
   type BundledFile,
   bundleHandlers,
+  type Runtime,
 } from "../compiler/bundle-handlers.js";
 import { extractHandlers } from "../compiler/extract-handlers.js";
 import { loadConfig } from "../compiler/load-config.js";
@@ -27,7 +28,7 @@ function removeStaleFiles(
   const expectedPaths = new Set(
     bundledFiles.flatMap((f) => [
       resolve(managedDir, f.event, f.fileName),
-      resolve(managedDir, f.event, f.fileName.replace(/\.cjs$/, ".sh")),
+      resolve(managedDir, f.event, f.fileName.replace(/\.mjs$/, ".sh")),
     ]),
   );
 
@@ -38,7 +39,7 @@ function removeStaleFiles(
 
     if (
       entry.isFile() &&
-      (entry.name.endsWith(".cjs") || entry.name.endsWith(".sh"))
+      (entry.name.endsWith(".mjs") || entry.name.endsWith(".sh"))
     ) {
       unlinkSync(fullPath);
       removedCount++;
@@ -49,7 +50,7 @@ function removeStaleFiles(
 
     for (const fileEntry of readdirSync(fullPath, { withFileTypes: true })) {
       if (!fileEntry.isFile()) continue;
-      if (!fileEntry.name.endsWith(".cjs") && !fileEntry.name.endsWith(".sh"))
+      if (!fileEntry.name.endsWith(".mjs") && !fileEntry.name.endsWith(".sh"))
         continue;
 
       const filePath = resolve(fullPath, fileEntry.name);
@@ -73,6 +74,7 @@ export interface BuildOptions {
   hooksDir?: string;
   dryRun?: boolean;
   clean?: boolean;
+  runtime?: Runtime;
 }
 
 function loadExistingSettings(settingsPath: string) {
@@ -111,6 +113,7 @@ export async function build(options: BuildOptions): Promise<void> {
     configPath,
     handlers,
     hooksDir: managedDir,
+    runtime: options.runtime ?? "node",
   });
 
   const removedCount = removeStaleFiles(managedDir, bundledFiles);

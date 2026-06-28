@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { Command } from "commander";
+import { Command, Option } from "commander";
+import type { Runtime } from "../compiler/bundle-handlers.js";
 import { build } from "./build.js";
 import { init } from "./init.js";
 
@@ -28,11 +29,16 @@ program
   .argument("[config]", "Path to config file", "hooks.config.ts")
   .requiredOption("-o, --output <path>", "Path to output settings.json")
   .option("--hooks-dir <dir>", "Where to write compiled JS files")
+  .addOption(
+    new Option("--runtime <runtime>", "JavaScript runtime to use")
+      .choices(["node", "bun", "deno"])
+      .default("node"),
+  )
   .option("--dry-run", "Print output without writing", false)
   .option("--clean", "Remove generated files before building", false)
   .action(
     run((config: unknown, opts: unknown) => {
-      const { output, hooksDir, dryRun, clean } = opts as Record<
+      const { output, hooksDir, runtime, dryRun, clean } = opts as Record<
         string,
         unknown
       >;
@@ -40,6 +46,7 @@ program
         config: config as string,
         output: output as string,
         hooksDir: hooksDir as string | undefined,
+        runtime: runtime as Runtime | undefined,
         dryRun: dryRun as boolean | undefined,
         clean: clean as boolean | undefined,
       });

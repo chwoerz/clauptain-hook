@@ -4,12 +4,15 @@ import * as esbuild from "esbuild";
 import type { HandlerOptions } from "../types/mapping.js";
 import type { HandlerEntry } from "./extract-handlers.js";
 import { generateRuntime } from "./runtime-template.js";
-import { generateWrapper } from "./wrapper-template.js";
+import { generateWrapper, type Runtime } from "./wrapper-template.js";
+
+export type { Runtime } from "./wrapper-template.js";
 
 export interface BundleOptions {
   configPath: string;
   handlers: HandlerEntry[];
   hooksDir: string;
+  runtime: Runtime;
 }
 
 export interface BundledFile extends HandlerOptions {
@@ -43,7 +46,7 @@ function pureAnnotationPlugin(configPath: string): esbuild.Plugin {
 export async function bundleHandlers(
   options: BundleOptions,
 ): Promise<BundledFile[]> {
-  const { configPath, handlers, hooksDir } = options;
+  const { configPath, handlers, hooksDir, runtime } = options;
   const absConfigPath = resolve(configPath);
 
   const plugin = pureAnnotationPlugin(absConfigPath);
@@ -53,7 +56,7 @@ export async function bundleHandlers(
       const { name, event, ...options } = handler;
       const eventDir = resolve(hooksDir, event);
       mkdirSync(eventDir, { recursive: true });
-      const fileName = `${name}.cjs`;
+      const fileName = `${name}.mjs`;
       const outfile = resolve(eventDir, fileName);
 
       const entryContent = [
@@ -67,7 +70,7 @@ export async function bundleHandlers(
           resolveDir: dirname(absConfigPath),
         },
         bundle: true,
-        format: "cjs",
+        format: "esm",
         platform: "node",
         treeShaking: true,
         plugins: [plugin],
@@ -77,9 +80,9 @@ export async function bundleHandlers(
         },
       });
 
-      const wrapperFileName = fileName.replace(/\.cjs$/, ".sh");
+      const wrapperFileName = fileName.replace(/\.mjs$/, ".sh");
       const wrapperOutfile = resolve(eventDir, wrapperFileName);
-      writeFileSync(wrapperOutfile, generateWrapper(fileName));
+      writeFileSync(wrapperOutfile, generateWrapper(fileName, runtime));
       chmodSync(wrapperOutfile, 0o755);
 
       return { ...options, fileName, filePath: outfile, event, name };

@@ -5,4 +5,4 @@ if ! command -v node >/dev/null 2>&1; then
   exit 2
 fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-exec node "$SCRIPT_DIR/onStop.cjs"
+exec node "$SCRIPT_DIR/onStop.mjs"

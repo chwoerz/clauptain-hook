@@ -48,13 +48,13 @@ describe("generated files", () => {
   });
 
   describe("file snapshots", () => {
-    it("PreToolUse/blockDangerous.cjs", async () => {
+    it("PreToolUse/blockDangerous.mjs", async () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.mjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
-        resolve(SNAPSHOT_DIR, "PreToolUse/blockDangerous.cjs"),
+        resolve(SNAPSHOT_DIR, "PreToolUse/blockDangerous.mjs"),
       );
     });
 
@@ -68,13 +68,13 @@ describe("generated files", () => {
       );
     });
 
-    it("Stop/onStop.cjs", async () => {
+    it("Stop/onStop.mjs", async () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "Stop/onStop.cjs"),
+        resolve(MANAGED_DIR, "Stop/onStop.mjs"),
         "utf-8",
       );
       await expect(stabilize(content)).toMatchFileSnapshot(
-        resolve(SNAPSHOT_DIR, "Stop/onStop.cjs"),
+        resolve(SNAPSHOT_DIR, "Stop/onStop.mjs"),
       );
     });
 
@@ -107,23 +107,23 @@ describe("generated files", () => {
 
   describe("structural checks", () => {
     it("handler bundles are syntactically valid Node.js", () => {
-      execSync(`node --check blockDangerous.cjs`, {
+      execSync(`node --check blockDangerous.mjs`, {
         cwd: resolve(MANAGED_DIR, "PreToolUse"),
         timeout: 5000,
       });
-      execSync(`node --check onStop.cjs`, {
+      execSync(`node --check onStop.mjs`, {
         cwd: resolve(MANAGED_DIR, "Stop"),
         timeout: 5000,
       });
     });
 
-    it("handler bundles are self-contained (no runtime.cjs)", () => {
+    it("handler bundles are self-contained (no runtime.mjs)", () => {
       const content = readFileSync(
-        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs"),
+        resolve(MANAGED_DIR, "PreToolUse/blockDangerous.mjs"),
         "utf-8",
       );
       expect(content).toContain("process.stdin");
-      expect(content).not.toContain('require("./runtime.cjs")');
+      expect(content).not.toContain('require("./runtime.mjs")');
     });
 
     it("wrapper scripts are executable", () => {
@@ -146,7 +146,7 @@ describe("generated files", () => {
         tool_use_id: "tu_1",
       });
 
-      const result = execSync(`echo '${payload}' | node blockDangerous.cjs`, {
+      const result = execSync(`echo '${payload}' | node blockDangerous.mjs`, {
         encoding: "utf-8",
         cwd: resolve(MANAGED_DIR, "PreToolUse"),
       });
@@ -180,7 +180,7 @@ describe("generated files", () => {
         stop_hook_active: false,
       });
 
-      const result = execSync(`echo '${payload}' | node onStop.cjs`, {
+      const result = execSync(`echo '${payload}' | node onStop.mjs`, {
         encoding: "utf-8",
         cwd: resolve(MANAGED_DIR, "Stop"),
       });

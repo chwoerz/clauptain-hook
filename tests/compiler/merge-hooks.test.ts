@@ -5,9 +5,9 @@ import { mergeHooksIntoSettings } from "../../src/compiler/merge-hooks.js";
 describe("mergeHooksIntoSettings", () => {
   const bundledFiles: BundledFile[] = [
     {
-      fileName: "blockDangerous.cjs",
+      fileName: "blockDangerous.mjs",
       filePath:
-        "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.cjs",
+        "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.mjs",
       event: "PreToolUse",
       name: "blockDangerous",
       matcher: "Bash",
@@ -18,8 +18,8 @@ describe("mergeHooksIntoSettings", () => {
       asyncRewake: undefined,
     },
     {
-      fileName: "onStop.cjs",
-      filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.cjs",
+      fileName: "onStop.mjs",
+      filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.mjs",
       event: "Stop",
       name: "onStop",
       matcher: undefined,
@@ -213,9 +213,9 @@ describe("mergeHooksIntoSettings", () => {
 
     const noWriteHandlers: BundledFile[] = [
       {
-        fileName: "blockDangerous.cjs",
+        fileName: "blockDangerous.mjs",
         filePath:
-          "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.cjs",
+          "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.mjs",
         event: "PreToolUse",
         name: "blockDangerous",
         matcher: "Bash",
@@ -242,8 +242,8 @@ describe("mergeHooksIntoSettings", () => {
   it("includes timeout in hook entry when set", () => {
     const filesWithTimeout: BundledFile[] = [
       {
-        fileName: "onStop.cjs",
-        filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.cjs",
+        fileName: "onStop.mjs",
+        filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.mjs",
         event: "Stop",
         name: "onStop",
         matcher: undefined,

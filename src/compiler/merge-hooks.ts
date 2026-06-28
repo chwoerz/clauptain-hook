@@ -39,7 +39,7 @@ function createHookCommandEntry(
   f: BundledFile,
 ): HookCommandEntry {
   const { fileName, filePath, event, name, matcher, ...hookOptions } = f;
-  const wrapperPath = filePath.replace(/\.cjs$/, ".sh");
+  const wrapperPath = filePath.replace(/\.mjs$/, ".sh");
   return clearUndefineds({
     type: "command" as const,
     command: relative(projectRoot, wrapperPath),

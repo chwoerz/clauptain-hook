@@ -39,11 +39,11 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    expect(existsSync(resolve(MANAGED_DIR, "runtime.cjs"))).toBe(false);
+    expect(existsSync(resolve(MANAGED_DIR, "runtime.mjs"))).toBe(false);
     expect(
-      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")),
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.mjs")),
     ).toBe(true);
-    expect(existsSync(resolve(MANAGED_DIR, "Stop/onStop.cjs"))).toBe(true);
+    expect(existsSync(resolve(MANAGED_DIR, "Stop/onStop.mjs"))).toBe(true);
     expect(
       existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh")),
     ).toBe(true);
@@ -62,10 +62,10 @@ describe("build command", () => {
   it("removes stale managed hook files", async () => {
     const staleDir = resolve(MANAGED_DIR, "PreToolUse");
     mkdirSync(staleDir, { recursive: true });
-    writeFileSync(resolve(staleDir, "oldHandler.cjs"), "console.log('stale');");
+    writeFileSync(resolve(staleDir, "oldHandler.mjs"), "console.log('stale');");
     writeFileSync(resolve(staleDir, "oldHandler.sh"), "#!/bin/sh\necho stale");
     writeFileSync(
-      resolve(HOOKS_DIR, "my-custom-hook.cjs"),
+      resolve(HOOKS_DIR, "my-custom-hook.mjs"),
       "console.log('keep me');",
     );
 
@@ -75,11 +75,11 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    expect(existsSync(resolve(staleDir, "oldHandler.cjs"))).toBe(false);
+    expect(existsSync(resolve(staleDir, "oldHandler.mjs"))).toBe(false);
     expect(existsSync(resolve(staleDir, "oldHandler.sh"))).toBe(false);
-    expect(existsSync(resolve(HOOKS_DIR, "my-custom-hook.cjs"))).toBe(true);
+    expect(existsSync(resolve(HOOKS_DIR, "my-custom-hook.mjs"))).toBe(true);
     expect(
-      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")),
+      existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.mjs")),
     ).toBe(true);
     expect(
       existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.sh")),
@@ -105,7 +105,7 @@ describe("build command", () => {
     });
 
     const result = execSync(
-      `echo '${stdinPayload}' | node ${resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")}`,
+      `echo '${stdinPayload}' | node ${resolve(MANAGED_DIR, "PreToolUse/blockDangerous.mjs")}`,
       { encoding: "utf-8", cwd: MANAGED_DIR },
     );
 

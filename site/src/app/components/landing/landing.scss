@@ -35,6 +35,37 @@
   margin-right: auto;
 }
 
+.runtime-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.runtime-label {
+  font-size: 0.875rem;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+.runtime-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.runtime-icon {
+  height: 24px;
+  width: auto;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .hero-split {
   display: grid;
   grid-template-columns: 1fr 1fr;

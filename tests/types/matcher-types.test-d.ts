@@ -1,14 +1,13 @@
-import { describe, it, expectTypeOf } from "vitest";
-import type {
-  ParseMatcher,
-  NarrowedToolInput,
-} from "../../src/types/mapping.js";
+import { describe, expectTypeOf, it } from "vitest";
 import type {
   BashInput,
-  FileWriteInput,
   FileEditInput,
-} from "../../src/types/tool-inputs.js";
-import type { PreToolUseHookInput } from "../../src/types/hooks.js";
+  FileWriteInput,
+} from "../../src/types/generated/tool-inputs.js";
+import type {
+  NarrowedToolInput,
+  ParseMatcher,
+} from "../../src/types/mapping.js";
 
 describe("ParseMatcher", () => {
   it("parses a single tool name", () => {

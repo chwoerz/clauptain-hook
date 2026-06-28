@@ -1,7 +1,8 @@
 export function clearUndefineds<T extends object>(obj: T): T {
-  for (const key of Object.keys(obj)) {
-    if ((obj as any)[key] === undefined) {
-      delete (obj as any)[key];
+  const record = obj as Record<string, unknown>;
+  for (const key of Object.keys(record)) {
+    if (record[key] === undefined) {
+      delete record[key];
     }
   }
   return obj;

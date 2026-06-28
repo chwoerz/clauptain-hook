@@ -1,4 +1,4 @@
-import type { HookEvent } from "../types/hooks.js";
+import type { HookEvent } from "../types/index.js";
 import type {
   HandlerOptions,
   HookInputFor,
@@ -34,7 +34,9 @@ export function defineHandler<E extends HookEvent>(
     typeof rest[0] === "object" && rest[0] !== null && !Array.isArray(rest[0])
       ? (rest.shift() as HandlerOptions)
       : undefined;
-  const handler = rest[0] as (input: any) => Promise<any>;
+  const handler = rest[0] as (
+    input: HookInputFor<E>,
+  ) => Promise<HookOutputFor<E>>;
 
   return clearUndefineds({
     ...options,

@@ -51,8 +51,8 @@ import type {
   WorktreeCreateHookInput,
   WorktreeCreateHookSpecificOutput,
   WorktreeRemoveHookInput,
-} from "./hooks.js";
-import type { ToolInputMap } from "./tool-inputs.js";
+} from "./generated/hooks.js";
+import type { ToolInputMap } from "./generated/tool-inputs.js";
 
 export interface HookInputMap {
   PreToolUse: PreToolUseHookInput;
@@ -150,9 +150,8 @@ export interface HandlerOptions {
   asyncRewake?: boolean;
 }
 
-export interface TypedHandler<
-  E extends HookEvent,
-> extends Readonly<HandlerOptions> {
+export interface TypedHandler<E extends HookEvent>
+  extends Readonly<HandlerOptions> {
   readonly event: E;
   readonly handler: (input: HookInputFor<E>) => Promise<HookOutputFor<E>>;
 }

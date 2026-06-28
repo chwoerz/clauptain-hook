@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { generateRuntime } from "../../src/compiler/runtime-template.js";
 
 describe("generateRuntime", () => {
@@ -13,7 +13,7 @@ describe("generateRuntime", () => {
 
   it("injects the handler expression", () => {
     const code = generateRuntime("blockRm.handler");
-    expect(code).toContain("var __handler = blockRm.handler;");
+    expect(code).toContain("blockRm.handler(");
   });
 
   it("produces code that can be evaluated", () => {

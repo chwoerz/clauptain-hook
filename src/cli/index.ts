@@ -3,10 +3,13 @@ import { Command } from "commander";
 import { build } from "./build.js";
 import { init } from "./init.js";
 
-function run(fn: (...args: any[]) => Promise<void>): (...args: any[]) => void {
+function run(
+  fn: (...args: unknown[]) => Promise<void>,
+): (...args: unknown[]) => void {
   return (...args) => {
-    fn(...args).catch((err: any) => {
-      console.error(`Error: ${err.message}`);
+    fn(...args).catch((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`Error: ${message}`);
       process.exit(1);
     });
   };
@@ -28,21 +31,30 @@ program
   .option("--dry-run", "Print output without writing", false)
   .option("--clean", "Remove generated files before building", false)
   .action(
-    run((config: string, opts: any) =>
-      build({
-        config,
-        output: opts.output,
-        hooksDir: opts.hooksDir,
-        dryRun: opts.dryRun,
-        clean: opts.clean,
-      }),
-    ),
+    run((config: unknown, opts: unknown) => {
+      const { output, hooksDir, dryRun, clean } = opts as Record<
+        string,
+        unknown
+      >;
+      return build({
+        config: config as string,
+        output: output as string,
+        hooksDir: hooksDir as string | undefined,
+        dryRun: dryRun as boolean | undefined,
+        clean: clean as boolean | undefined,
+      });
+    }),
   );
 
 program
   .command("init")
   .description("Create a starter hooks config")
   .option("-o, --output <path>", "Target settings.json path")
-  .action(run((opts: any) => init({ output: opts.output })));
+  .action(
+    run((opts: unknown) => {
+      const { output } = opts as Record<string, unknown>;
+      return init({ output: output as string | undefined });
+    }),
+  );
 
 program.parse();

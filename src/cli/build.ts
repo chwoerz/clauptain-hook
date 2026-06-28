@@ -1,19 +1,19 @@
 import {
-  readFileSync,
-  readdirSync,
-  writeFileSync,
   existsSync,
   mkdirSync,
+  readdirSync,
+  readFileSync,
   rmSync,
   unlinkSync,
-} from "fs";
-import { resolve, dirname, relative } from "path";
-import { loadConfig } from "../compiler/load-config.js";
-import { extractHandlers } from "../compiler/extract-handlers.js";
+  writeFileSync,
+} from "node:fs";
+import { dirname, relative, resolve } from "node:path";
 import {
-  bundleHandlers,
   type BundledFile,
+  bundleHandlers,
 } from "../compiler/bundle-handlers.js";
+import { extractHandlers } from "../compiler/extract-handlers.js";
+import { loadConfig } from "../compiler/load-config.js";
 import { mergeHooksIntoSettings } from "../compiler/merge-hooks.js";
 
 const MANAGED_SUBDIR = "typed-claude-hooks";
@@ -75,8 +75,8 @@ export interface BuildOptions {
   clean?: boolean;
 }
 
-function loadExistingSettings(settingsPath: any) {
-  let existingSettings: Record<string, any> = {};
+function loadExistingSettings(settingsPath: string) {
+  let existingSettings: Record<string, unknown> = {};
   if (existsSync(settingsPath)) {
     try {
       existingSettings = JSON.parse(readFileSync(settingsPath, "utf-8"));
@@ -130,7 +130,7 @@ export async function build(options: BuildOptions): Promise<void> {
   }
 
   mkdirSync(dirname(settingsPath), { recursive: true });
-  writeFileSync(settingsPath, JSON.stringify(merged, null, 2) + "\n");
+  writeFileSync(settingsPath, `${JSON.stringify(merged, null, 2)}\n`);
 
   printBuildSummary(bundledFiles, settingsPath, removedCount);
 }

@@ -5,7 +5,6 @@ interface SettingsHookEntry {
   type: 'command';
   command: 'node';
   args: string[];
-  __managed: 'typed-claude-hooks';
 }
 
 interface SettingsMatcherEntry {
@@ -38,7 +37,6 @@ export class SettingsGeneratorService {
             type: 'command' as const,
             command: 'node' as const,
             args: [`.claude/hooks/${kebabCase(event)}-${name}.cjs`],
-            __managed: 'typed-claude-hooks' as const,
           },
         ],
       });

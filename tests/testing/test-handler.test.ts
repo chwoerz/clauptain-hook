@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { testHandler } from "../../src/testing/test-handler.js";
+import { describe, expect, it } from "vitest";
 import { defineHandler } from "../../src/authoring/define-handler.js";
+import { testHandler } from "../../src/testing/test-handler.js";
 
 const blockEnv = defineHandler(
   "PreToolUse",
@@ -9,6 +9,7 @@ const blockEnv = defineHandler(
     if (input.tool_input.file_path.endsWith(".env")) {
       return {
         hookSpecificOutput: {
+          hookEventName: "PreToolUse",
           permissionDecision: "deny" as const,
           permissionDecisionReason: "blocked",
         },

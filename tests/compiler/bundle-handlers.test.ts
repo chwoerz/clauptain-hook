@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { resolve } from "path";
-import { existsSync, readFileSync, mkdirSync, rmSync } from "fs";
-import { loadConfig } from "../../src/compiler/load-config.js";
-import { extractHandlers } from "../../src/compiler/extract-handlers.js";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 import { bundleHandlers } from "../../src/compiler/bundle-handlers.js";
+import { extractHandlers } from "../../src/compiler/extract-handlers.js";
+import { loadConfig } from "../../src/compiler/load-config.js";
 
 const FIXTURE_PATH = resolve(
   import.meta.dirname,

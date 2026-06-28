@@ -1,10 +1,10 @@
+import { chmodSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import * as esbuild from "esbuild";
-import { chmodSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, resolve } from "path";
-import { generateRuntime } from "./runtime-template.js";
-import { generateWrapper } from "./wrapper-template.js";
 import type { HandlerOptions } from "../types/mapping.js";
 import type { HandlerEntry } from "./extract-handlers.js";
+import { generateRuntime } from "./runtime-template.js";
+import { generateWrapper } from "./wrapper-template.js";
 
 export interface BundleOptions {
   configPath: string;

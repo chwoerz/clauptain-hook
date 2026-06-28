@@ -1,9 +1,18 @@
-import { relative } from "path";
-import type { BundledFile } from "./bundle-handlers.js";
+import { relative } from "node:path";
 import { clearUndefineds } from "../utils.js";
+import type { BundledFile } from "./bundle-handlers.js";
+
+interface ExistingHookEntry {
+  command?: string;
+}
+
+interface ExistingMatcherEntry {
+  matcher?: string;
+  hooks: ExistingHookEntry[];
+}
 
 export interface MergeOptions {
-  existingSettings: Record<string, any>;
+  existingSettings: Record<string, unknown>;
   bundledFiles: BundledFile[];
   projectRoot: string;
 }
@@ -18,7 +27,6 @@ interface HookCommandEntry {
   once?: boolean;
   async?: boolean;
   asyncRewake?: boolean;
-  __managed: "typed-claude-hooks";
 }
 
 interface MatcherEntry {
@@ -36,7 +44,6 @@ function createHookCommandEntry(
     type: "command" as const,
     command: relative(projectRoot, wrapperPath),
     ...hookOptions,
-    __managed: "typed-claude-hooks" as const,
   });
 }
 
@@ -62,40 +69,48 @@ function buildHookEntries(
   );
 }
 
-function isManagedHook(hook: any): boolean {
-  return hook.__managed === "typed-claude-hooks";
+function isManagedHook(hook: ExistingHookEntry): boolean {
+  const { command } = hook;
+  return (
+    typeof command === "string" &&
+    command.includes("typed-claude-hooks") &&
+    command.endsWith(".sh")
+  );
 }
 
-function matcherKey(entry: any): string | undefined {
+function matcherKey(entry: ExistingMatcherEntry): string | undefined {
   return entry.matcher;
 }
 
 function stripManagedFromExisting(
-  existingHooks: Record<string, any[]>,
-): Record<string, any[]> {
+  existingHooks: Record<string, ExistingMatcherEntry[]>,
+): Record<string, ExistingMatcherEntry[]> {
   return Object.fromEntries(
     Object.entries(existingHooks)
       .map(([event, matchers]) => {
         const cleaned = matchers
-          .map((m: any) => ({
+          .map((m) => ({
             ...m,
-            hooks: (m.hooks ?? []).filter((h: any) => !isManagedHook(h)),
+            hooks: (m.hooks ?? []).filter((h) => !isManagedHook(h)),
           }))
-          .filter((m: any) => m.hooks.length > 0);
+          .filter((m) => m.hooks.length > 0);
         return [event, cleaned] as const;
       })
       .filter(([, cleaned]) => cleaned.length > 0),
   );
 }
 
-function mergeByMatcher(existing: any[], managed: MatcherEntry[]): any[] {
+function mergeByMatcher(
+  existing: ExistingMatcherEntry[],
+  managed: MatcherEntry[],
+): ExistingMatcherEntry[] {
   const managedByMatcher = new Map<string | undefined, MatcherEntry>();
   for (const entry of managed) {
-    managedByMatcher.set(matcherKey(entry), entry);
+    managedByMatcher.set(entry.matcher, entry);
   }
 
   const seen = new Set<string | undefined>();
-  const result: any[] = [];
+  const result: ExistingMatcherEntry[] = [];
 
   for (const entry of existing) {
     const key = matcherKey(entry);
@@ -112,7 +127,7 @@ function mergeByMatcher(existing: any[], managed: MatcherEntry[]): any[] {
   }
 
   for (const entry of managed) {
-    if (!seen.has(matcherKey(entry))) {
+    if (!seen.has(entry.matcher)) {
       result.push(entry);
     }
   }
@@ -122,10 +137,14 @@ function mergeByMatcher(existing: any[], managed: MatcherEntry[]): any[] {
 
 export function mergeHooksIntoSettings(
   options: MergeOptions,
-): Record<string, any> {
+): Record<string, unknown> {
   const { existingSettings, bundledFiles, projectRoot } = options;
   const newHookEntries = buildHookEntries(bundledFiles, projectRoot);
-  const cleaned = stripManagedFromExisting(existingSettings.hooks || {});
+  const existingHooks = (existingSettings.hooks ?? {}) as Record<
+    string,
+    ExistingMatcherEntry[]
+  >;
+  const cleaned = stripManagedFromExisting(existingHooks);
 
   const allEvents = [
     ...new Set([...Object.keys(cleaned), ...Object.keys(newHookEntries)]),

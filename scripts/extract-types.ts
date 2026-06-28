@@ -4,16 +4,14 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SDK_PATH = resolve(
+const PREFIX = "../node_modules/@anthropic-ai/claude-agent-sdk";
+const SDK_PATH = resolve(__dirname, PREFIX, "sdk.d.ts");
+const SDK_TOOLS_PATH = resolve(__dirname, PREFIX, "sdk-tools.d.ts");
+const HOOKS_OUTPUT = resolve(__dirname, "../src/types/generated/hooks.ts");
+const TOOL_INPUTS_OUTPUT = resolve(
   __dirname,
-  "../node_modules/@anthropic-ai/claude-agent-sdk/sdk.d.ts",
+  "../src/types/generated/tool-inputs.ts",
 );
-const SDK_TOOLS_PATH = resolve(
-  __dirname,
-  "../node_modules/@anthropic-ai/claude-agent-sdk/sdk-tools.d.ts",
-);
-const HOOKS_OUTPUT = resolve(__dirname, "../src/types/hooks.ts");
-const TOOL_INPUTS_OUTPUT = resolve(__dirname, "../src/types/tool-inputs.ts");
 
 const project = new Project({ skipAddingFilesFromTsConfig: true });
 

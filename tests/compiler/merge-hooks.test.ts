@@ -1,12 +1,13 @@
-import { describe, it, expect } from "vitest";
-import { mergeHooksIntoSettings } from "../../src/compiler/merge-hooks.js";
+import { describe, expect, it } from "vitest";
 import type { BundledFile } from "../../src/compiler/bundle-handlers.js";
+import { mergeHooksIntoSettings } from "../../src/compiler/merge-hooks.js";
 
 describe("mergeHooksIntoSettings", () => {
   const bundledFiles: BundledFile[] = [
     {
       fileName: "blockDangerous.cjs",
-      filePath: "/project/.claude/hooks/PreToolUse/blockDangerous.cjs",
+      filePath:
+        "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.cjs",
       event: "PreToolUse",
       name: "blockDangerous",
       matcher: "Bash",
@@ -18,7 +19,7 @@ describe("mergeHooksIntoSettings", () => {
     },
     {
       fileName: "onStop.cjs",
-      filePath: "/project/.claude/hooks/Stop/onStop.cjs",
+      filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.cjs",
       event: "Stop",
       name: "onStop",
       matcher: undefined,
@@ -40,11 +41,9 @@ describe("mergeHooksIntoSettings", () => {
     expect(result.hooks.PreToolUse).toHaveLength(1);
     expect(result.hooks.PreToolUse[0].matcher).toBe("Bash");
     expect(result.hooks.PreToolUse[0].hooks[0].command).toBe(
-      ".claude/hooks/PreToolUse/blockDangerous.sh",
+      ".claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh",
     );
-    expect(result.hooks.PreToolUse[0].hooks[0].__managed).toBe(
-      "typed-claude-hooks",
-    );
+    expect(result.hooks.PreToolUse[0].hooks[0]).not.toHaveProperty("__managed");
     expect(result.hooks.Stop).toHaveLength(1);
   });
 
@@ -75,8 +74,7 @@ describe("mergeHooksIntoSettings", () => {
             hooks: [
               {
                 type: "command",
-                command: "node old.js",
-                __managed: "typed-claude-hooks",
+                command: ".claude/hooks/typed-claude-hooks/Write/oldHandler.sh",
               },
             ],
           },
@@ -91,18 +89,26 @@ describe("mergeHooksIntoSettings", () => {
     });
 
     const preToolUse = result.hooks.PreToolUse;
-    const manualHook = preToolUse.find((m: any) =>
-      m.hooks.some((h: any) => h.command === "echo manual"),
+    const manualHook = preToolUse.find((m: Record<string, unknown>) =>
+      m.hooks.some((h: Record<string, unknown>) => h.command === "echo manual"),
     );
     expect(manualHook).toBeTruthy();
 
-    const oldManaged = preToolUse.find((m: any) =>
-      m.hooks.some((h: any) => h.command === "node old.js"),
+    const oldManaged = preToolUse.find((m: Record<string, unknown>) =>
+      m.hooks.some(
+        (h: Record<string, unknown>) =>
+          h.command === ".claude/hooks/typed-claude-hooks/Write/oldHandler.sh",
+      ),
     );
     expect(oldManaged).toBeUndefined();
 
-    const newManaged = preToolUse.find((m: any) =>
-      m.hooks.some((h: any) => h.__managed === "typed-claude-hooks"),
+    const newManaged = preToolUse.find((m: Record<string, unknown>) =>
+      m.hooks.some(
+        (h: Record<string, unknown>) =>
+          typeof h.command === "string" &&
+          (h.command as string).includes("typed-claude-hooks") &&
+          (h.command as string).endsWith(".sh"),
+      ),
     );
     expect(newManaged).toBeTruthy();
   });
@@ -132,7 +138,9 @@ describe("mergeHooksIntoSettings", () => {
     expect(bashEntry.matcher).toBe("Bash");
     expect(bashEntry.hooks).toHaveLength(2);
     expect(bashEntry.hooks[0].command).toBe("echo manual");
-    expect(bashEntry.hooks[1].__managed).toBe("typed-claude-hooks");
+    expect(bashEntry.hooks[1].command).toBe(
+      ".claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh",
+    );
   });
 
   it("cleans up stale managed hooks from merged entries on rebuild", () => {
@@ -145,9 +153,8 @@ describe("mergeHooksIntoSettings", () => {
               { type: "command", command: "echo manual" },
               {
                 type: "command",
-                command: "node",
-                args: [".claude/hooks/preToolUse-oldHandler.cjs"],
-                __managed: "typed-claude-hooks",
+                command:
+                  ".claude/hooks/typed-claude-hooks/PreToolUse/oldHandler.sh",
               },
             ],
           },
@@ -165,14 +172,24 @@ describe("mergeHooksIntoSettings", () => {
     expect(bashEntry.matcher).toBe("Bash");
 
     const managedHooks = bashEntry.hooks.filter(
-      (h: any) => h.__managed === "typed-claude-hooks",
+      (h: Record<string, unknown>) =>
+        typeof h.command === "string" &&
+        (h.command as string).includes("typed-claude-hooks") &&
+        (h.command as string).endsWith(".sh"),
     );
     expect(managedHooks).toHaveLength(1);
     expect(managedHooks[0].command).toBe(
-      ".claude/hooks/PreToolUse/blockDangerous.sh",
+      ".claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh",
     );
 
-    const manualHooks = bashEntry.hooks.filter((h: any) => !h.__managed);
+    const manualHooks = bashEntry.hooks.filter(
+      (h: Record<string, unknown>) =>
+        !(
+          typeof h.command === "string" &&
+          (h.command as string).includes("typed-claude-hooks") &&
+          (h.command as string).endsWith(".sh")
+        ),
+    );
     expect(manualHooks).toHaveLength(1);
     expect(manualHooks[0].command).toBe("echo manual");
   });
@@ -186,9 +203,7 @@ describe("mergeHooksIntoSettings", () => {
             hooks: [
               {
                 type: "command",
-                command: "node",
-                args: [".claude/hooks/preToolUse-oldHandler.cjs"],
-                __managed: "typed-claude-hooks",
+                command: ".claude/hooks/typed-claude-hooks/Write/oldHandler.sh",
               },
             ],
           },
@@ -199,7 +214,8 @@ describe("mergeHooksIntoSettings", () => {
     const noWriteHandlers: BundledFile[] = [
       {
         fileName: "blockDangerous.cjs",
-        filePath: "/project/.claude/hooks/PreToolUse/blockDangerous.cjs",
+        filePath:
+          "/project/.claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.cjs",
         event: "PreToolUse",
         name: "blockDangerous",
         matcher: "Bash",
@@ -218,7 +234,7 @@ describe("mergeHooksIntoSettings", () => {
     });
 
     const writeEntry = result.hooks.PreToolUse.find(
-      (m: any) => m.matcher === "Write",
+      (m: Record<string, unknown>) => m.matcher === "Write",
     );
     expect(writeEntry).toBeUndefined();
   });
@@ -227,7 +243,7 @@ describe("mergeHooksIntoSettings", () => {
     const filesWithTimeout: BundledFile[] = [
       {
         fileName: "onStop.cjs",
-        filePath: "/project/.claude/hooks/Stop/onStop.cjs",
+        filePath: "/project/.claude/hooks/typed-claude-hooks/Stop/onStop.cjs",
         event: "Stop",
         name: "onStop",
         matcher: undefined,
@@ -267,7 +283,7 @@ describe("mergeHooksIntoSettings", () => {
 
     const hookEntry = result.hooks.PreToolUse[0].hooks[0];
     expect(hookEntry.command).toBe(
-      ".claude/hooks/PreToolUse/blockDangerous.sh",
+      ".claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh",
     );
     expect(hookEntry).not.toHaveProperty("args");
   });

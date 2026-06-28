@@ -1,13 +1,12 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { resolve } from "path";
 import {
   existsSync,
-  readFileSync,
-  readdirSync,
-  writeFileSync,
   mkdirSync,
+  readFileSync,
   rmSync,
-} from "fs";
+  writeFileSync,
+} from "node:fs";
+import { resolve } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { build } from "../../src/cli/build.js";
 
 const FIXTURE_CONFIG = resolve(
@@ -54,8 +53,8 @@ describe("build command", () => {
     expect(settings.model).toBe("claude-sonnet-4-6");
     expect(settings.hooks.PreToolUse).toHaveLength(1);
     expect(settings.hooks.PreToolUse[0].matcher).toBe("Bash");
-    expect(settings.hooks.PreToolUse[0].hooks[0].__managed).toBe(
-      "typed-claude-hooks",
+    expect(settings.hooks.PreToolUse[0].hooks[0]).not.toHaveProperty(
+      "__managed",
     );
     expect(settings.hooks.Stop).toHaveLength(1);
   });
@@ -66,7 +65,7 @@ describe("build command", () => {
     writeFileSync(resolve(staleDir, "oldHandler.cjs"), "console.log('stale');");
     writeFileSync(resolve(staleDir, "oldHandler.sh"), "#!/bin/sh\necho stale");
     writeFileSync(
-      resolve(HOOKS_DIR, "preToolUse-userManual.cjs"),
+      resolve(HOOKS_DIR, "my-custom-hook.cjs"),
       "console.log('keep me');",
     );
 
@@ -78,9 +77,7 @@ describe("build command", () => {
 
     expect(existsSync(resolve(staleDir, "oldHandler.cjs"))).toBe(false);
     expect(existsSync(resolve(staleDir, "oldHandler.sh"))).toBe(false);
-    expect(existsSync(resolve(HOOKS_DIR, "preToolUse-userManual.cjs"))).toBe(
-      true,
-    );
+    expect(existsSync(resolve(HOOKS_DIR, "my-custom-hook.cjs"))).toBe(true);
     expect(
       existsSync(resolve(MANAGED_DIR, "PreToolUse/blockDangerous.cjs")),
     ).toBe(true);
@@ -96,7 +93,7 @@ describe("build command", () => {
       hooksDir: HOOKS_DIR,
     });
 
-    const { execSync } = await import("child_process");
+    const { execSync } = await import("node:child_process");
     const stdinPayload = JSON.stringify({
       session_id: "test",
       transcript_path: "/tmp/test.jsonl",

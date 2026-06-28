@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { resolve } from "path";
-import { loadConfig } from "../../src/compiler/load-config.js";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 import { extractHandlers } from "../../src/compiler/extract-handlers.js";
+import { loadConfig } from "../../src/compiler/load-config.js";
 
 const FIXTURE_PATH = resolve(
   import.meta.dirname,

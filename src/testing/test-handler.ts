@@ -1,4 +1,4 @@
-import type { HookEvent } from "../types/hooks.js";
+import type { HookEvent } from "../types/index.js";
 import type {
   HookInputFor,
   HookOutputFor,

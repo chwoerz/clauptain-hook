@@ -6,8 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/typed-claude-hooks/preToolUse-blockDangerous.sh",
-            "__managed": "typed-claude-hooks"
+            "command": ".claude/hooks/typed-claude-hooks/PreToolUse/blockDangerous.sh"
           }
         ]
       }
@@ -17,8 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/typed-claude-hooks/stop-onStop.sh",
-            "__managed": "typed-claude-hooks"
+            "command": ".claude/hooks/typed-claude-hooks/Stop/onStop.sh"
           }
         ]
       }

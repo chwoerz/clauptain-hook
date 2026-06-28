@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { Project, SyntaxKind } from "ts-morph";
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { Project } from "ts-morph";
+import { describe, expect, it } from "vitest";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SDK_PATH = resolve(

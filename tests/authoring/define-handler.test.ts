@@ -1,14 +1,14 @@
-import { describe, it, expect, expectTypeOf } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 import { defineHandler } from "../../src/authoring/define-handler.js";
 import type {
   BashInput,
-  FileWriteInput,
   FileEditInput,
-} from "../../src/types/tool-inputs.js";
+  FileWriteInput,
+} from "../../src/types/generated/tool-inputs.js";
 
 describe("defineHandler", () => {
   it("creates a TypedHandler with the event and function", () => {
-    const handler = defineHandler("PreToolUse", async (input) => {
+    const handler = defineHandler("PreToolUse", async (_input) => {
       return {};
     });
 
@@ -18,7 +18,7 @@ describe("defineHandler", () => {
   });
 
   it("works with different event types", () => {
-    const handler = defineHandler("Stop", async (input) => {
+    const handler = defineHandler("Stop", async (_input) => {
       return {};
     });
 
@@ -30,7 +30,7 @@ describe("defineHandler", () => {
     const handler = defineHandler(
       "PreToolUse",
       { matcher: "Bash" },
-      async (input) => {
+      async (_input) => {
         return {};
       },
     );
@@ -43,7 +43,7 @@ describe("defineHandler", () => {
     const handler = defineHandler(
       "PreToolUse",
       { matcher: "Write|Edit" },
-      async (input) => {
+      async (_input) => {
         return {};
       },
     );

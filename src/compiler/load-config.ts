@@ -1,10 +1,10 @@
+import { randomUUID } from "node:crypto";
+import { mkdirSync, rmSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
-import { mkdirSync, rmSync } from "fs";
-import { dirname, resolve } from "path";
-import { randomUUID } from "crypto";
-import { pathToFileURL } from "url";
+import type { HookEvent } from "../types/index.js";
 import type { TypedHandler } from "../types/mapping.js";
-import type { HookEvent } from "../types/hooks.js";
 
 export interface LoadedConfig {
   handlerExports: Record<string, TypedHandler<HookEvent>>;

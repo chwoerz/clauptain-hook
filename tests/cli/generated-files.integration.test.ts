@@ -1,7 +1,13 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { resolve } from "path";
-import { readFileSync, mkdirSync, rmSync, writeFileSync, statSync } from "fs";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
+import {
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import { resolve } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { build } from "../../src/cli/build.js";
 
 const FIXTURE_CONFIG = resolve(
@@ -94,7 +100,7 @@ describe("generated files", () => {
         }),
       );
       await expect(
-        JSON.stringify(normalized, null, 2) + "\n",
+        `${JSON.stringify(normalized, null, 2)}\n`,
       ).toMatchFileSnapshot(resolve(SNAPSHOT_DIR, "settings.json"));
     });
   });

@@ -16,8 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node old-managed.js",
-            "__managed": "clauptain-hook"
+            "command": ".claude/hooks/typed-claude-hooks/Write/oldHandler.sh"
           }
         ]
       }

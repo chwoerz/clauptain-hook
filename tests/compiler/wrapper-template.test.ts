@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { generateWrapper } from "../../src/compiler/wrapper-template.js";
 
 describe("generateWrapper", () => {
@@ -19,8 +19,8 @@ describe("generateWrapper", () => {
   });
 
   it("execs node with the correct cjs file", () => {
-    const code = generateWrapper("preToolUse-blockRm.cjs");
-    expect(code).toContain('exec node "$SCRIPT_DIR/preToolUse-blockRm.cjs"');
+    const code = generateWrapper("blockRm.cjs");
+    expect(code).toContain('exec node "$SCRIPT_DIR/blockRm.cjs"');
   });
 
   it("contains the generated-by banner", () => {

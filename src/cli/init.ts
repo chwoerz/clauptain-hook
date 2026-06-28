@@ -1,5 +1,5 @@
-import { existsSync, writeFileSync } from "fs";
-import { resolve } from "path";
+import { existsSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 export interface InitOptions {
   output?: string;

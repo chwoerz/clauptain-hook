@@ -2,9 +2,10 @@
 
 // src/utils.ts
 function clearUndefineds(obj) {
-  for (const key of Object.keys(obj)) {
-    if (obj[key] === void 0) {
-      delete obj[key];
+  const record = obj;
+  for (const key of Object.keys(record)) {
+    if (record[key] === void 0) {
+      delete record[key];
     }
   }
   return obj;
@@ -25,8 +26,8 @@ function defineHandler(event, ...rest) {
 var blockDangerous = /* @__PURE__ */ defineHandler(
   "PreToolUse",
   { matcher: "Bash" },
-  async (input) => {
-    const u = aHelper();
+  async (_input) => {
+    const _u = aHelper();
     return {};
   }
 );
@@ -35,7 +36,6 @@ function aHelper() {
 }
 
 // <stdin>
-var __handler = blockDangerous.handler;
 var __stdin = "";
 process.stdin.setEncoding("utf8");
 process.stdin.on("data", function(chunk) {
@@ -43,7 +43,7 @@ process.stdin.on("data", function(chunk) {
 });
 process.stdin.on("end", function() {
   Promise.resolve().then(function() {
-    return __handler(JSON.parse(__stdin));
+    return blockDangerous.handler(JSON.parse(__stdin));
   }).then(function(result) {
     if (result && Object.keys(result).length > 0) {
       process.stdout.write(JSON.stringify(result));
